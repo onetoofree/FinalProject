@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--I confirm that this coursework submission is entirely my own work, except where explicitly stated otherwise-->
+<html>
+	<head>
+		<title>Phil Edwards IWT Assignment 2</title>
+		<meta charset="utf-8"/>
+		
+		<script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			$("input[id='propertyCheckbox']").change(function()
+			{
+				var maxChecksAllowed = 5;
+				var checkedCount = $("input[id='propertyCheckbox']:checked").length;
+				if (checkedCount > maxChecksAllowed)
+				{
+					$(this).prop("checked", "");
+					alert ('You can select a maximum of ' + maxChecksAllowed + ' areas of interest');
+				}
+			}
+			);
+		}
+		);
+		</script>	
+	
+		<!--CSS-->
+		<style>
+			
+			h1 {
+				text-align: left;
+				text-transform: uppercase;
+				color: #1DA14D;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			
+			#heading {
+				text-align: left;
+				text-transform: uppercase;
+				color: #1DA14D;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			
+			h2 {
+				text-align: centre;
+				color: #C7415C;
+				font-family: Arial, Helvetica, sans-serif;
+			}			
+			
+			td {
+				text-align: left;				
+				
+				font-family: Arial, Helvetica, sans-serif;
+			}			
+		</style>
+	</head>
+	
+	<body>
+		<h1>Country Info</h1>
+		
+		<!--Search form-->
+		<form id="countrySelection" action="http://titan.dcs.bbk.ac.uk/~pedwar09/cw2/final/getData.php" method="GET">	
+		<!--<form id="countrySelection">-->
+			<table cellspacing="3">
+				<tr id="heading">
+					<td>Select up to 4 countries</td>
+				</tr>				
+				<tr>
+					<td>France:</td>
+					<td>
+						<input type="checkbox" name="france" value="France"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Germany:</td>
+					<td>
+						<input type="checkbox" name="germany" value="Germany"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Italy:</td>
+					<td>
+						<input type="checkbox" name="italy" value="Italy"/>
+					</td>
+				</tr>
+				<tr>
+					<td>UK:</td>
+					<td>
+						<input type="checkbox" name="uk" value="UK"/>
+					</td>
+				</tr>
+				<tr id="heading">
+					<td>Select up to 5 areas of interest</td>
+				</tr>
+				<tr>
+					<td>Total size of county:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="countrySize" value="Size">
+					</td>
+				</tr>				
+				<tr>
+					<td>Length of Coastline:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="coastlineLength" value="Coastline">
+					</td>
+				</tr>
+				<tr>
+					<td>Percentage of Agricultural Land:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="agriculturalLand" value="Agricultural">
+					</td>
+				</tr>
+				<tr>
+					<td>Percentage of Forest Land:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="forestLand" value="Forest">
+					</td>
+				</tr>
+				<tr>
+					<td>Percentage of other types of land:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="otherLandTypes" value="OtherLand">
+					</td>
+				</tr>				
+				<tr>
+					<td>Median Age of Population:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="medianAge" value="Median">
+					</td>
+				</tr>
+				<tr>
+					<td>Life expectancy at Birth:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="lifeExpectancy" value="Expectancy">
+					</td>
+				</tr>
+				<tr>
+					<td>GDP:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="grossDomesticProduct" value="GDP">
+					</td>
+				</tr>
+				<tr>
+					<td>Size of Labour Force:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="labourForceSize" value="Labour">
+					</td>
+				</tr>
+				<tr>
+					<td>Population below poverty line:</td>
+					<td>
+						<input type="checkbox" id="propertyCheckbox" name="belowPovertyLine" value="Poverty">
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="Click To See Comparison" id="performSearchButton"/>						
+					</td>
+				</tr>
+		</form>
+	</body>
+</html>
