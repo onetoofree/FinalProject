@@ -1,4 +1,12 @@
 <?php 
+
+// function connectDatabase()
+// {
+// 	require '../dbconnection/db_connect.php';
+// }
+// //require '../dbconnection/db_connect.php';
+
+// connectDatabase();
 require '../dbconnection/db_connect.php';
 session_start();
 
