@@ -1,4 +1,5 @@
 <?php
+// this file contains all php functions
 function createThumbnail($fileName)
 {
   //echo $fileDestination;
