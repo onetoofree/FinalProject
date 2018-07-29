@@ -135,6 +135,15 @@ if(isset($_FILES['file']))
     displayYearField();
     displayMapWithSearchBox();
     displayUploadButton();
+
+    $result = exec("python ../pythonStuff/getFiles.py /tmp");
+    $result_array = json_decode($result);
+    $resArray = [1,2,3,4,5];
+    foreach($result_array as $row)
+    //foreach($resArray as $row)
+    {
+      echo $row . "<br>";
+    }
 }
 ?>
 
