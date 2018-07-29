@@ -108,4 +108,10 @@ function uploadTheSelectedImage()
   $dbc->query($sql);
 }
 
+function getVisionTags($selectedFile)
+{
+  $tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $selectedFile");
+  echo $tags;
+}
+
 ?>
