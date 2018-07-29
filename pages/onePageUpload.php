@@ -4,6 +4,7 @@ require '../pages/include/uploadFunctions.php';
 session_start();
 
 ob_start();
+putenv('GOOGLE_APPLICATION_CREDENTIALS=/Library/WebServer/Documents/project/apiKey.json');
 
 $file;
 
@@ -136,14 +137,61 @@ if(isset($_FILES['file']))
     displayMapWithSearchBox();
     displayUploadButton();
 
-    $result = exec("python ../pythonStuff/getFiles.py /tmp");
-    $result_array = json_decode($result);
-    $resArray = [1,2,3,4,5];
-    foreach($result_array as $row)
-    //foreach($resArray as $row)
-    {
-      echo $row . "<br>";
-    }
+    // $result = exec("python ../pythonStuff/getFiles.py /tmp");
+    // echo "tags";
+    // echo "<br>";
+    // echo $result;
+    // echo "<br>";
+    // $result_array = json_decode($result);
+    // $resArray = [1,2,3,4,5];
+    // foreach($result_array as $row)
+    // //foreach($resArray as $row)
+    // {
+    //   echo $row . "<br>";
+    // }
+
+    // echo "<br>";
+    // echo "new stuff";
+    // echo "<br>";
+    // exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py 2>&1", $output, $return);
+    // if (!$return) {
+    //   echo "image recognition ran successfully";
+    // } else {
+    //   echo "it flopped";
+    //   echo "<br>";
+    //   print_r($output); 
+    //   echo "<br>";
+    //   echo $return;
+    // }
+
+    
+    echo "new stuff";
+    echo "<br>";
+    echo $fDestination;
+    echo "<br>";
+    getVisionTags($fDestination);
+    //$tags = exec("python /Library/WebServer/Documents/project/gVision/visionex/imageRecognition.py");
+    //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fName");
+    //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py ../uploads/10712860_10152339735885936_7902406205857066950_n.jpg 2>&1", $output, $return);
+    // $tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $fDestination");
+    //$tags = exec("python ../pythonStuff/getFiles.py /tmp");
+    // echo "tags";
+    // echo "<br>";
+    // echo $fDestination;
+    // echo "<br>";
+    // echo "python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fDestination 2>&1";
+    // echo "<br>";
+    // echo $tags;
+    // $tagsArray = json_decode($tags);
+    
+    // foreach($tagsArray as $row)
+    // //foreach($tags as $row)
+    // {
+    //     echo $row . "<br>";
+    // }
+
+    // echo ("yooooo");
+    //print($tagsArray);
 }
 ?>
 

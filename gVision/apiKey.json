@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "pe-birkbeck-project",
+    "private_key_id": "e1034c9d1944141c0ef0ed460ec5dbb8047c023c",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCx/wdHxlPNuBcl\nraY0Hd1R+jzLfsBOH65/76Za5NiyhV4pdPsCbpCq8+xM5PniUKmaotff5qLVhSz2\nKDOrqkvMBrG5LBWJEDF9utWrW2V3WNw/JF13RgkD+3756zsEnGALzfE7RHPKaSDl\n7IwkyprlAx3yPvN8WA1czDcWHoyX6ZkxaD7kzOnOiYJYxnKrtstgoNXNAgScRqC5\nzAbjuKRTUv10znF76/kGaRZr39fjVSRTPLbv2vgcFL+uvboTMUaUAqrzSPGzXsb0\nUvpfLemjKi951Twt1sFqwTp17Mq2AD7o24kgLT7dXEcJVinVKfDN3tXa69CatIK7\nM17pBa6nAgMBAAECggEAMmHsNyJJvVzC3IzrEyxy5Y3t4HH30AVCuP7mOSs2tU1v\n6k8s77LJK0KRG/DiVG+dmmJGtZ9MbyDbqa+WdJxnCRDKBI6YZ+wX/i1A5tiff2k9\nKnhKJoVB7wkkl2xAj90NiLnZ8vs8xUn9oGdVAeMBdhpsQxITjJpF6gL6Ar5R8Hub\nYh+b1XZ3NRx3rN6VOzP1NblszYvvxdPKNAVsGsVR/PCaPxXg31xuObhdfqBITpTe\nYjwU9mInIJYjB+5bHv7mCQ+whkagzsNMggB/CzUi/wN2yvoU/dRnlfeuLPzvE+fJ\nYfzfr22fqxlZS0ru+91JJ0Z5D5FO4xktYGu7Ftim6QKBgQDXQ2UWMTrYSLA8F092\nAqNBUNzDoVf6gaSksZxlVoEKbE6TJACBZ65h9U0lxB2p7vQPIk98EVbAu439x05e\nNjGWeKTtcDUIjwyLIxqJfTR7Hrjf3yPjaZm0WCKJNDvqRlKHgMmxk4y6EPx11VJ6\nr5B2GQVVuZw6muiRL9mvSHgT+QKBgQDTrjNSeTuvF5N55CwOvBcg6KBzzqCInQlc\ncw9J4+rzlEbvueXcaRf4O1KV9C4VfSEq89rBdnRod8Tl4VDxSyUAzc5egVf/5Jj0\nrh6kElWkQM05BWd+3rq1q8/W+Fr2fbqhIReGeBvbPVCKuUlPIMsY+s7M/VXtgB3a\n0i2fOX8/nwKBgQCeg954jSAMDNraJUA6Yo7dljI7TSCAM9+N98x3Q1Aa4M6rw6Mr\np7HeKMj6uoQtkuzeCCIH9qyvmG1jJ9UpwzaY25Z30lz7RHu0KdFs1WpED8eL88F1\nwVmSWCR2bKSCS+6SIeBkh4blrYR7MO9fsNDsZlhrXBcTgOcpotbmILNr4QKBgHDB\nAMt0kksg1sh9ts4eeH9qClXFgZNjeqIJE+K7CeK3X9XAAuWWAVOTXdlMWOPPZER5\n4lNc4oLnETWWAESXT12PQtbqNNK0lJj4yo+AyKeWcPpnm4pj37Z3j10lq2ZS8H91\nng9dmRD+JxHNwnPotuZWaqOcahH5RW3SuMRwnwxnAoGAFmfAJA1Dc2wnDQYly/WH\nwqVM9Q5+OnRnWkbQyU2Rq+Vsf8lL+/9kETZTrr4326OnHut6iKtfNwb5AMkf6qHS\nMgF8ErzlAKiNZqwlSLm07UkyZFEirFEHClNk3nWMEl/82Wj0QnmjgKjoLCXehZm9\nGtrL7rMfYqWFPowj+5/Mi0g=\n-----END PRIVATE KEY-----\n",
+    "client_email": "gvision@pe-birkbeck-project.iam.gserviceaccount.com",
+    "client_id": "112264663492750113948",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gvision%40pe-birkbeck-project.iam.gserviceaccount.com"
+  }  

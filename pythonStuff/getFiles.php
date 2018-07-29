@@ -1,6 +1,6 @@
 <?php
 
-$result = exec("python getFiles.py /Library/Webserver");
+$result = exec("python getFiles.py /Library/Webserver/share");
 $result_array = json_decode($result);
 $resArray = [1,2,3,4,5];
 foreach($result_array as $row)
