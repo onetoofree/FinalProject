@@ -170,6 +170,7 @@ if(isset($_FILES['file']))
     echo $fDestination;
     echo "<br>";
     getVisionTags($fDestination);
+    readExifFromUploadedImages($fDestination);
     //$tags = exec("python /Library/WebServer/Documents/project/gVision/visionex/imageRecognition.py");
     //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fName");
     //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py ../uploads/10712860_10152339735885936_7902406205857066950_n.jpg 2>&1", $output, $return);

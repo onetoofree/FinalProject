@@ -114,4 +114,28 @@ function getVisionTags($selectedFile)
   echo $tags;
 }
 
+function readExifFromUploadedImages($selectedFile)
+{
+  $exif_data = exif_read_data($selectedFile);
+  $photos [] = 
+        [
+            'FileName'=>$exif_data['FileName'],
+            'Model'=>$exif_data['Model'],
+            'ExposureTime'=>$exif_data['ExposureTime'],
+            'FNumber'=>$exif_data['FNumber'],
+            'ISOSpeedRatings'=>$exif_data['ISOSpeedRatings'],
+            'FocalLength'=>$exif_data['FocalLength'],
+        ];
+  echo "<br>";
+  //print_r($photos);
+  echo "<br>";
+  foreach($photos[0] as $photoExif)
+  {
+    echo "<br>";
+    echo $photoExif;
+    echo "<br>";
+  }
+  echo "<br>";
+}
+
 ?>
