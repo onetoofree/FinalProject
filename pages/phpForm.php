@@ -1,12 +1,5 @@
 <?php 
 
-// function connectDatabase()
-// {
-// 	require '../dbconnection/db_connect.php';
-// }
-// //require '../dbconnection/db_connect.php';
-
-// connectDatabase();
 require '../dbconnection/db_connect.php';
 session_start();
 
@@ -34,6 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <head>
 	<title>Registration Form</title>
 	<script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
+	<!-- <?php include 'css/css.html'; ?> -->
 </head>
 
 

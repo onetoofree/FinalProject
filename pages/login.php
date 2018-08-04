@@ -4,12 +4,12 @@ ob_start();
 
 // Set session variables to be used on profile.php page
 $_SESSION['email'] = $_POST['email'];
-//$_SESSION['username'] = $_POST['username'];
+$_SESSION['username'] = $_POST['username'];
 $_SESSION['password'] = $_POST['password'];
 
 // Escape email to protect against SQL injections
-$email = $dbc->escape_string($_POST['email']);
-$result = $dbc->query("SELECT * FROM user WHERE email='$email'");
+$username = $dbc->escape_string($_POST['username']);
+$result = $dbc->query("SELECT * FROM user WHERE username='$username'");
 
 if ( $result->num_rows == 0 ){ // User doesn't exist
     $_SESSION['message'] = "User with that email doesn't exist!";
@@ -23,7 +23,7 @@ else { // User exists
     {
     //if ( password_verify($_POST['password'], $user['password']) ) {
         
-        $_SESSION['email'] = $user['email'];
+        $_SESSION['username'] = $user['username'];
         //$_SESSION['first_name'] = $user['first_name'];
         //$_SESSION['last_name'] = $user['last_name'];
         $_SESSION['active'] = $user['active'];
