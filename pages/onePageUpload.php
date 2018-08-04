@@ -24,8 +24,12 @@ $fName = $_SESSION['filename'];
 $fDestination = $_SESSION['fileDestination'];
 $tDestination = $_SESSION['thumbDestination'];
 $fTmpName = $_SESSION['fileTempName'];
+$username = $_SESSION['username'];
+$tags = $_SESSION['tags'];
 echo "<br>";
 echo "this fName is available: $fName";
+echo "<br>";
+echo "this username is available: $username";
 ?>
 
 <!DOCTYPE html>
@@ -135,6 +139,7 @@ if(isset($_FILES['file']))
     displaySelectedImage();
     displayYearField();
     displayMapWithSearchBox();
+    displayTagSelector($fDestination);
     displayUploadButton();
 
     // $result = exec("python ../pythonStuff/getFiles.py /tmp");
@@ -169,8 +174,10 @@ if(isset($_FILES['file']))
     echo "<br>";
     echo $fDestination;
     echo "<br>";
-    getVisionTags($fDestination);
+    //getVisionTags($fDestination);
     readExifFromUploadedImages($fDestination);
+    // displayTagSelector($tags);
+    
     //$tags = exec("python /Library/WebServer/Documents/project/gVision/visionex/imageRecognition.py");
     //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fName");
     //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py ../uploads/10712860_10152339735885936_7902406205857066950_n.jpg 2>&1", $output, $return);
@@ -195,6 +202,28 @@ if(isset($_FILES['file']))
     //print($tagsArray);
 }
 ?>
+
+<!-- <div class="tagSelector">
+  <form id="countrySelection" action="onePageUpload.php" method="POST">
+    <table cellspacing="3">
+          <tr id="heading">
+            <td>Tags</td>
+          </tr>				
+          <tr>
+            <td>France:</td>
+            <td>
+              <input type="checkbox" name="france" value="France"/>
+            </td>
+          </tr>
+          <tr>
+            <td>Germany:</td>
+            <td>
+              <input type="checkbox" name="germany" value="Germany"/>
+            </td>
+          </tr>
+    </table>
+  </form>
+</div> -->
 
 <div class="uploadButton">
 <table>

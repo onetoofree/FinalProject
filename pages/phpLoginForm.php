@@ -1,4 +1,5 @@
 <?php 
+
 require '../dbconnection/db_connect.php';
 session_start();
 
@@ -34,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 <form action="phpLoginForm.php" method="post">
 <!-- Username: <input type="text" name="username"><br> -->
-Email: <input type="text" name="email"><br>
+Username: <input type="text" name="username"><br>
 Password: <input type="text" name="password"><br>
 <button type="submit" name="login" />Login</button>
 </form>
