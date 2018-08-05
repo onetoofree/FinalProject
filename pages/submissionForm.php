@@ -31,9 +31,9 @@ $_SESSION['long'] = $longitude;
 $_SESSION['lat'] = $latitude;
 
 echo "<br>";
-echo "the longitutde is: $longitude";
+echo "the longitutde isss: $longitude";
 echo "<br>";
-echo "the latitude is: $latitude";
+echo "the latitude isss: $latitude";
 echo "<br>";
 echo "the year is: $yearValue"
 

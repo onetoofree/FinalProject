@@ -26,10 +26,13 @@ $tDestination = $_SESSION['thumbDestination'];
 $fTmpName = $_SESSION['fileTempName'];
 $username = $_SESSION['username'];
 $tags = $_SESSION['tags'];
+$myTags = $_SESSION['selectedTags'];
 echo "<br>";
 echo "this fName is available: $fName";
 echo "<br>";
 echo "this username is available: $username";
+echo "<br>";
+echo "these tags were selected: $myTags";
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +142,7 @@ if(isset($_FILES['file']))
     displaySelectedImage();
     displayYearField();
     displayMapWithSearchBox();
-    displayTagSelector($fDestination);
+    //displayTagSelector($fDestination);
     displayUploadButton();
 
     // $result = exec("python ../pythonStuff/getFiles.py /tmp");
