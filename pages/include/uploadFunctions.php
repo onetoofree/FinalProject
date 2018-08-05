@@ -93,30 +93,57 @@ function displayUploadButton()
 
 function displayTagSelector($fDestination)
 {
-$googleVisionApiOutput = getVisionTags($fDestination);
-$tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $googleVisionApiOutput);
-echo "<div class='tagSelector'>";
-echo "<form id='tagSelection' action='onePageUpload.php' method='POST'>";  
-echo "<table cellspacing='3'>";   
-echo "<tr id='heading'>";          
-echo "<td>Tags</td>";            
-echo "</tr>";
-// echo "</div>";
+  $googleVisionApiOutput = getVisionTags($fDestination);
+  $tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $googleVisionApiOutput);
+  echo "<div class='tagSelector'>";
+  //echo "<form id='tagSelection' action='onePageUpload.php' method='post'>"; 
+  echo "<form id='tagSelection' method='get'>"; 
+  echo "<table cellspacing='3'>";   
+  echo "<tr id='heading'>";          
+  echo "<td>The below tags have been selected for your image</td>";            
+  echo "</tr>";
 
-$eachTag = explode(',', $tags);
-foreach($eachTag as $suggestedTag)
-{
-    echo "<tr>";          
-    echo "<td>$suggestedTag</td>";            
-    //echo "<td>"; 
-    echo "<td>";            
-    echo "<input type='checkbox' name='this' value='that'/>";              
-    echo "</td>";            
-    echo "</tr>";   
-}     
-echo "</table>";    
-//echo "</form>";  
-echo "</div>";
+  $eachTag = explode(',', $tags);
+  foreach($eachTag as $suggestedTag)
+  {
+      echo "<tr>";          
+      echo "<td>$suggestedTag</td>";            
+      echo "<td>";            
+      echo "<input type='checkbox' name='options[]' value=$suggestedTag/>";              
+      echo "</td>";            
+      echo "</tr>";   
+  }
+  echo "<tr>";
+  echo "<td></td>";
+  echo "<td>";
+  //echo "<input type='submit' value='Click To See Comparison' id='performSearchButton'/>";
+  echo "<input type='submit' value='Go!' />";
+  echo "</td>";
+  echo "<tr>";
+  echo "</table>";  
+  echo "</div>";
+
+  if(isset($_POST['submit']))
+  {
+    if(!empty($_POST['options']))
+    {
+      echo "<h3>You have selected the following: </h3>";
+      foreach($_POST['options'] as $option)
+      {
+        echo '<p>'.$option.'<p>';
+      }
+    }
+    else
+    {
+      echo 'select one';
+    }
+  }
+
+  $checked = $_GET['options'];
+  for($i=0; $i < count($checked); $i++){
+    echo "Selected " . $checked[$i] . "<br/>";
+  }
+  $_SESSION['selectedTags'] = $suggestedTag;
 }
 
 function uploadTheSelectedImage()
@@ -169,6 +196,7 @@ function uploadTheSelectedImage()
   '$iso',
   '$resolution')";
   $dbc->query($sql);
+  header("location: successfulUpload.php");
 }
 
 function getVisionTags($selectedFile)
@@ -317,5 +345,115 @@ function readExifFromUploadedImages($selectedFile)
   $_SESSION['XResolution'] = $actualResolution;
 
 }
+
+function displayTags($fDestination)
+{
+  $googleVisionApiOutput = getVisionTags($fDestination);
+  $tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $googleVisionApiOutput);
+  //$resultingTags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $selectedFile");
+  //$resultingTags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py /Library/WebServer/Documents/project/uploads/IMG_6078.JPG 2>&1");
+    //$tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $resultingTags);
+    
+    $selection = [];
+    
+    $checked = $_POST['options'];
+    echo "<div class='tagSelector'>";
+  
+    echo "<form id='tagSelection' method='post'>"; 
+    echo "<table cellspacing='3'>";   
+    echo "<tr id='heading'>";          
+    echo "<td>The below tags have been selected for your image</td>";            
+    echo "</tr>";
+
+    $eachTag = explode(',', $tags);
+    foreach($eachTag as $suggestedTag)
+    {
+        echo "<tr>";          
+        echo "<td>$suggestedTag</td>";            
+        echo "<td>";            
+        echo "<input type='checkbox' name='options[]' value=$suggestedTag/>";              
+        echo "</td>";            
+        echo "</tr>";   
+    }
+    echo "<tr>";
+    echo "<td></td>";
+    echo "<td>";
+    echo "<input type='text' name='options[]' id='manuallyEnteredTags'/>";
+    echo "<button type='submit' name='addTags' />Add Tags to Images</button>";
+    // echo "<input type='submit' name='addTags' value='Go!' />";
+    echo "</td>";
+    echo "<tr>";
+    echo "</table>";  
+    echo "</div>";
+
+    for($i=0; $i < count($checked); $i++)
+    {
+        if(strlen($checked[$i]) > 0)
+        {
+            array_push($selection, $checked[$i]);
+        }        
+    }
+    
+    print_r($selection);
+    echo "<br>";
+    
+    $finalTags = preg_replace("/[^a-zA-Z0-9]+/", "", $selection);
+
+    print_r($finalTags);
+    echo "<br>";
+
+    foreach($finalTags as $selectedTag)
+    {
+        print_r($selectedTag);
+        echo "<br>";
+        
+    }
+    echo "there are ".count($finalTags)." tags selected";
+    echo "<br>";
+    $_SESSION['listOfTags'] = $finalTags;
+    $listOfTags = $_SESSION['listOfTags'];
+    print_r($listOfTags);
+    echo "<br>";
+    foreach($finalTags as $sessionedTags)
+    {
+        $_SESSION[$sessionedTags] = $sessionedTags;
+    }
+    //return $finalTags;
+}
+
+function addTagsToImages()
+{
+  require '../dbconnection/db_connect.php';
+  
+  $tagsToBeAdded = $_SESSION['listOfTags'];
+  // echo '<br>';
+  // echo "These tags will be added";
+  // echo '<br>';
+  // print_r($tagsToBeAdded);
+
+  foreach($tagsToBeAdded as $tagValue)
+  {
+    $getImageId = $dbc->query("SELECT imageid
+    FROM project.images
+    WHERE imagename = 'IMG_6026.JPG'
+    ORDER BY imageid desc
+    LIMIT 1;");
+
+    $returnedImageId = $getImageId->fetch_assoc();
+    $imageId = $returnedImageId['imageid'];
+    
+    // echo "<br>";
+    // echo $imageId;
+    
+
+    $insertTagSql = "INSERT INTO tags 
+    (tag, imageId) 
+    VALUES 
+    ('$tagValue', '$imageId')";
+    $dbc->query($insertTagSql);  
+  }
+  
+}
+
 
 ?>
