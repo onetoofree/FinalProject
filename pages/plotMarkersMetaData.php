@@ -74,23 +74,72 @@ if(isset($_POST['mapSearch']))
     //     echo "didn't reach"; 
     // }
 
-    $sql = "SELECT * 
-    FROM project.images
-    -- WHERE userid IS NOT NULL
-    -- WHERE year = ?
-    WHERE year = $yearStart";
+
+    // THIS DB CODE DOES THE JOB
+
+    // $sql = "SELECT * 
+    // FROM project.images
+    // -- WHERE userid IS NOT NULL
+    // -- WHERE year = ?
+    // WHERE year = $yearStart";
     
-    $result = mysqli_query($dbc, $sql);
-    //$data1 = mysqli_fetch_assoc($result);
+    // $result = mysqli_query($dbc, $sql);
+    // //$data1 = mysqli_fetch_assoc($result);
 
-    $myArray = array();
-    while ($data1 = mysqli_fetch_assoc($result))
+    // $myArray = array();
+    // while ($data1 = mysqli_fetch_assoc($result))
+    // {
+    //     $myArray[] = $data1;
+    // }
+    // $coordsa = json_encode($myArray);
+    // echo $coordsa;
+
+    // ALL THE WAY TO HERE!!
+
+    // $stmt = $dbc->prepare("SELECT * 
+    // FROM project.images
+    // WHERE year = ?");
+
+    // $stmt->bind_param("s", $yearStart);
+    // $yearStart = $_POST['yearSearchStart'];
+
+    // $stmt->execute();
+
+    if($stmt = $dbc->prepare("SELECT * 
+    FROM project.images
+    WHERE year = ?"))
     {
-        $myArray[] = $data1;
+        echo "gonna get you some stuff";
+        $stmt->bind_param("s", $yearStart);
+        $stmt->execute();
+        //$stmt->bind_result($result);
+        $result = $stmt->Get_result();
+        $myArray = array();
+        while ($myrow = $result->fetch_assoc())
+        {
+            $myArray[] = $myrow;
+        }
+        $coords2 = json_encode($myArray);
+        echo $coords2;
+        //$stmt->fetch();
+        //printf("%s is in district %s\n", $yearStart, $result);
     }
-    $coordsa = json_encode($myArray);
-    echo $coordsa;
+    else
+    {
+        echo "man...tings is bad";
+    }
 
+    // $myArray = array();
+    // while ($data2 = $stmt->fetch())
+    // {
+    //     $myArray[] = $data2;
+    // }
+    // $coords2 = json_encode($myArray);
+    // echo $coords2;
+
+
+    
+    
         
 
     
