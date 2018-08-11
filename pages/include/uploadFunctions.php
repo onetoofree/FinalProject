@@ -49,7 +49,7 @@ function displaySelectedImage()
   echo "<table>";
   echo "<h1>selected image</h1>
   <tr>
-  <td><img src={$_SESSION['fileDestination']}></td>";
+  <td><img src={$_SESSION['thumbDestination']}></td>";
   echo "</table>";
   echo "</div>";
 }
@@ -164,8 +164,8 @@ function uploadTheSelectedImage()
   $shutterspeed = $_SESSION['ExposureTime'];
   $aperture = $_SESSION['ApertureFNumber'];
   $iso = $_SESSION['ISOSpeedRatings'];
-  //$resolution = $_SESSION['XResolution'];
-  $resolution = !empty($_SESSION['XResolution']) ? "'$resolution'" : "NULL";
+  $resolution = $_SESSION['XResolution'];
+  //$resolution = !empty($_SESSION['XResolution']) ? "'$resolution'" : "NULL";
   move_uploaded_file($fTmpName, $fDestination);
   $sql = "INSERT INTO images 
   (imagename, 
@@ -291,30 +291,6 @@ function readExifFromUploadedImages($selectedFile)
     $actualResolution = $resolution;
   }
   
-  
-  
-  // if($fMultiplied == true & $sMultiplied == true)
-  // {
-  //   $photos [] = 
-  //       [
-  //           'Make'=>$exif_data['Make'],
-  //           'Model'=>$exif_data['Model'],            
-  //           'ExposureTime'=>$actualShutterSpeed,
-  //           'FNumber'=>$actualFStop1,
-  //           'XResolution'=>$exif_data['XResolution'],
-  //       ];
-  // }
-  // else
-  // {
-  //   $photos [] = 
-  //       [
-  //           'Make'=>$exif_data['Make'],
-  //           'Model'=>$exif_data['Model'],
-  //           'ExposureTime'=>$exif_data['ExposureTime'],
-  //           'FNumber'=>$exif_data['FNumber'],
-  //           'XResolution'=>$exif_data['XResolution'],
-  //       ];
-  // }
   $photos [] = 
         [
             'Make'=>$exif_data['Make'],
@@ -426,6 +402,8 @@ function addTagsToImages()
   require '../dbconnection/db_connect.php';
   
   $tagsToBeAdded = $_SESSION['listOfTags'];
+  $fileName = $_SESSION['filename'];
+
   // echo '<br>';
   // echo "These tags will be added";
   // echo '<br>';
@@ -435,7 +413,7 @@ function addTagsToImages()
   {
     $getImageId = $dbc->query("SELECT imageid
     FROM project.images
-    WHERE imagename = 'IMG_6026.JPG'
+    WHERE imagename = '$fileName'
     ORDER BY imageid desc
     LIMIT 1;");
 

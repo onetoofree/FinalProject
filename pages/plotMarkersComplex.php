@@ -16,7 +16,6 @@ if(isset($_POST['mapSearch']))
     $locSearchLng = $_POST['locLngCoords'];
     $searchRadius = $_POST['searchRadius'];
     $tags = $_POST['tagSearch'];
-    $cameraMake = $_POST['cameraMake'];
 
     $tagArray = [];
     $eachTag = explode(',', $tags);
@@ -26,8 +25,6 @@ if(isset($_POST['mapSearch']))
     }
     //echo "the year is: $searchTag";
     $tagList = json_encode($tagArray);
-    //$finalList = implode(',', (array)$tagList);
-    $finalList = trim($tagList, '[]');
     
     //$_SESSION['yearValue'] = $year;
 
@@ -37,8 +34,9 @@ if(isset($_POST['mapSearch']))
     // $dbc->query($sql);
 
     // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year >= $yearStart and year <= $yearEnd");
-    $stmt = $dbc->query("SELECT
-    imageid, imagepath, longitude, latitude, year, thumbnailpath, make, (
+    
+    $query = "SELECT
+    imageid, imagepath, longitude, latitude, year, thumbnailpath, (
       3959 * acos (
         cos ( radians($locSearchLat) )
         -- cos ( radians(51.5083466) )
@@ -51,27 +49,68 @@ if(isset($_POST['mapSearch']))
       )
     ) AS distance
   FROM project.images
-  HAVING distance < $searchRadius
-  AND latitude is not null 
-  AND longitude is not null 
-  AND year >= $yearStart 
-  AND year <= $yearEnd
-  AND imageid in
-  (
-    select distinct imageid from project.tags
-    -- where tag IN ('$tags')
-    where tag IN ($finalList)
-  )
-  AND make = '$cameraMake'
-  ORDER BY distance
-  LIMIT 0 , 200;");
-//$stmt->execute();
-$myArray = array();
-while ($data = $stmt->fetch_assoc())
-{
-    $myArray[] = $data;
-}
-$coords = json_encode($myArray);
+HAVING distance < $searchRadius
+   AND year = ?
+    -- WHERE imageid IS NOT NULL";
+
+
+//   if($_POST['tagSearch'])
+//   {
+//       $query .= "AND imageid IN
+//       (
+//         select distinct imageid from project.tags
+//         where tag IN (?)
+//       )";
+//   }
+
+  $stmt1 = $dbc->prepare($query);
+  $stmt1->bind_param('s', $yearStart);
+  $stmt1->execute();
+  //$stmt1->bind_result($yearStart);
+
+//   if($_POST['tagSearch'])
+//   {
+//       //$executeStmt->bind_param("sssssss", $searchRadius, $fTmpName, $tags, $searchRadius, $fTmpName, $tags, $fTmpName);
+//       $executeStmt->bind_param("s", $tags);
+//   }
+
+  //Warning: mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /Library/WebServer/Documents/project/pages/plotMarkersComplex.php on line 69
+  //Warning: mysqli_stmt::bind_param(): Number of variables doesn't match number of parameters in prepared statement in /Library/WebServer/Documents/project/pages/plotMarkersComplex.php on line 69
+
+    
+//     $stmt = $dbc->query("SELECT
+//     imageid, imagepath, longitude, latitude, year, thumbnailpath, (
+//       3959 * acos (
+//         cos ( radians($locSearchLat) )
+//         -- cos ( radians(51.5083466) )
+//         * cos( radians( latitude ) )
+//         * cos( radians( longitude ) - radians($locSearchLng) )
+//         -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
+//         + sin ( radians($locSearchLat) )
+//         -- + sin ( radians(51.5083466) )
+//         * sin( radians( latitude ) )
+//       )
+//     ) AS distance
+//   FROM project.images
+//   HAVING distance < $searchRadius
+//   AND latitude is not null 
+//   AND longitude is not null 
+//   AND year >= $yearStart 
+//   AND year <= $yearEnd
+//   AND imageid in
+//   (
+//     select distinct imageid from project.tags
+//     where tag IN ('$tags')
+//   )
+//   ORDER BY distance
+//   LIMIT 0 , 200;");
+// //$stmt->execute();
+// $myArray = array();
+// while ($data = $stmt->fetch_assoc())
+// {
+//     $myArray[] = $data;
+// }
+// $coords = json_encode($myArray);
 //echo $coords;
 
 }
@@ -456,9 +495,7 @@ $coords = json_encode($myArray);
 
         <!-- <h4>Search by year</h4> -->
         <tr>
-        <!-- <td><form action='plotMarkers.php' method='post'></td> -->
-        <td><form method='post'></td>        
-       
+        <td><form action='plotMarkersComplex.php' method='post'></td>        
         Start Year: <input type='text' id='yearSearchStart' name='yearSearchStart' value='4000'><br>
         End Year: <input type='text' id='yearSearchEnd' name='yearSearchEnd' value='5000'><br>
         <!-- <input type='hidden' name='locLatCoords' value='51.5083466'>
@@ -477,7 +514,7 @@ $coords = json_encode($myArray);
         </textarea>
         </tr>
         <br>
-        Make: <input type='text' id='cameraMake' name='cameraMake' value='FUJIFILM'><br>
+        
 
         <button type='submit' name='mapSearch' />Search for Images</button>
         </table>
@@ -513,16 +550,7 @@ if(isset($_POST['mapSearch']))
     echo "<br>";
 
     echo "<h1>Image Gallery</h1>";
-    echo $coords;
-    echo "<br>";
-    echo "tags: ".$tags;
-    echo "<br>";
-    echo "tagList: ".$tagList;
-    //$finalList = implode(',', (array)$tagList);
-    echo "<br>";
-    echo "finalList: ".$finalList;
-    echo "<br>";
-    // print_r($finalList);
+    //echo $coords;
     echo 
     '
     <div class = "imageGallery">
