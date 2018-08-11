@@ -17,6 +17,7 @@ if(isset($_POST['mapSearch']))
     $searchRadius = $_POST['searchRadius'];
     $tags = $_POST['tagSearch'];
     $cameraMake = $_POST['cameraMake'];
+    $cameraModel = $_POST['cameraModel'];
 
     $tagArray = [];
     $eachTag = explode(',', $tags);
@@ -38,7 +39,7 @@ if(isset($_POST['mapSearch']))
 
     // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year >= $yearStart and year <= $yearEnd");
     $stmt = $dbc->query("SELECT
-    imageid, imagepath, longitude, latitude, year, thumbnailpath, make, (
+    imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
       3959 * acos (
         cos ( radians($locSearchLat) )
         -- cos ( radians(51.5083466) )
@@ -63,6 +64,7 @@ if(isset($_POST['mapSearch']))
     where tag IN ($finalList)
   )
   AND make = '$cameraMake'
+  AND model = '$cameraModel'
   ORDER BY distance
   LIMIT 0 , 200;");
 //$stmt->execute();
@@ -473,11 +475,33 @@ $coords = json_encode($myArray);
         <br>
         </tr>
         <tr>
-        <textarea rows="4" cols="50" id="tagSearch" name="tagSearch">
-        </textarea>
+        <textarea rows="4" cols="50" id="tagSearch" name="tagSearch"></textarea>
         </tr>
         <br>
         Make: <input type='text' id='cameraMake' name='cameraMake' value='FUJIFILM'><br>
+        Model: <input type='text' id='cameraModel' name='cameraModel' value='X100T'><br>
+        <tr>
+        <td>Camera Make</td>
+        <td>
+          <input type='checkbox' name='cameraMake' value=cameraMake/>
+          <select id="category">
+							<option value="">All Makes</option>
+							<option value="chemistry">NIKON CORPORATION</option>
+							<option value="economics">FUJIFILM</option>
+					</select>
+        </td>
+        </tr>
+        <tr>
+        <td>Camera Model</td>
+        <td>
+          <input type='checkbox' name='cameraModel' value=cameraModel/>
+          <select id="category">
+							<option value="">All Models</option>
+							<option value="chemistry">NIKON D300S</option>
+              <option value="economics">X100T</option>
+					</select>
+        </td>
+        </tr>
 
         <button type='submit' name='mapSearch' />Search for Images</button>
         </table>
