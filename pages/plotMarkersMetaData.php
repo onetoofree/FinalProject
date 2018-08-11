@@ -8,78 +8,156 @@ require '../dbconnection/db_connect.php';
 ob_start();
 
 if(isset($_POST['mapSearch']))
-{    
-    
+{
     $yearStart = $_POST['yearSearchStart'];
     $yearEnd = $_POST['yearSearchEnd'];
     $locSearchLat = $_POST['locLatCoords'];
     $locSearchLng = $_POST['locLngCoords'];
     $searchRadius = $_POST['searchRadius'];
     $tags = $_POST['tagSearch'];
+    $cameraMake = $_POST['cameraMake'];
+    $cameraModel = $_POST['cameraModel'];
 
     $tagArray = [];
     $eachTag = explode(',', $tags);
     foreach($eachTag as $searchTag)
-    {
-      array_push($tagArray, $searchTag);
-    }
-    //echo "the year is: $searchTag";
+        {
+            array_push($tagArray, $searchTag);
+        }
     $tagList = json_encode($tagArray);
+    $finalList = trim($tagList, '[]');
+
+    $stmt = $dbc->query(
+        "SELECT longitude, latitude, imagepath
+        FROM images 
+        WHERE latitude is not null 
+        and longitude is not null 
+        and year >= $yearStart 
+        and year <= $yearEnd
+        Limit 0 , 10;");
+    $myArray = array();
+    while ($data = $stmt->fetch_assoc())
+    {
+        $myArray[] = $data;
+    }
+    $coords = json_encode($myArray);
+
+    // $query = "SELECT * 
+    // FROM project.images
+    // -- WHERE userid IS NOT NULL
+    // WHERE year = ?";
+
+    // // if ($_POST['tagSearch'])
+    // // {
+    // //     $query .= " AND year = ";
+    // // }
+
+    // $stmt1 = $dbc->prepare($query);
+    // $stmt1->bind_param("s", $yearStart);
+    // $yearStart = $_POST['yearSearchStart'];
+    // // $result = $stmt1->execute();
+    // $stmt1->execute();
+    // // $stmt1->close();
+    // // $dbc->close();
+    // $myArray1 = array();
+    // if($result = $dbc->query($query))
+    // {
+    //     while($row = $result->fetch_assoc())
+    //     {
+    //         echo "<br>";
+    //         echo "yo";
+    //     }
+    // }
+    // else
+    // {
+    //     echo "<br>";
+    //     echo "didn't reach"; 
+    // }
+
+    $sql = "SELECT * 
+    FROM project.images
+    -- WHERE userid IS NOT NULL
+    -- WHERE year = ?
+    WHERE year = $yearStart";
     
-    //$_SESSION['yearValue'] = $year;
+    $result = mysqli_query($dbc, $sql);
+    //$data1 = mysqli_fetch_assoc($result);
 
-    // move_uploaded_file($fTmpName, $fDestination);
-    // $sql = "INSERT INTO images (imagename, imagepath, userid, year, longitude, latitude) VALUES ('$fName', '$fDestination', '$username', $year, $longi, $lati)";
-    // //$sql = "INSERT INTO images (imagename, imagepath, userid) VALUES ('1', '1', '1')";
-    // $dbc->query($sql);
+    $myArray = array();
+    while ($data1 = mysqli_fetch_assoc($result))
+    {
+        $myArray[] = $data1;
+    }
+    $coordsa = json_encode($myArray);
+    echo $coordsa;
 
-    // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year >= $yearStart and year <= $yearEnd");
-    
-    $query = "SELECT
-    imageid, imagepath, longitude, latitude, year, thumbnailpath, (
-      3959 * acos (
-        cos ( radians($locSearchLat) )
-        -- cos ( radians(51.5083466) )
-        * cos( radians( latitude ) )
-        * cos( radians( longitude ) - radians($locSearchLng) )
-        -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
-        + sin ( radians($locSearchLat) )
-        -- + sin ( radians(51.5083466) )
-        * sin( radians( latitude ) )
-      )
-    ) AS distance
-  FROM project.images
-HAVING distance < $searchRadius
-   AND year = ?
-    -- WHERE imageid IS NOT NULL";
-
-
-//   if($_POST['tagSearch'])
-//   {
-//       $query .= " AND imageid IN
-//       (
-//         select distinct imageid from project.tags
-//         where tag IN (?)
-//       )";
-//   }
-
-  $stmt1 = $dbc->prepare($query);
-  $stmt1->bind_param('s', $yearStart);
-  $stmt1->execute();
-  //$stmt1->bind_result($yearStart);
-
-//   if($_POST['tagSearch'])
-//   {
-//       //$executeStmt->bind_param("sssssss", $searchRadius, $fTmpName, $tags, $searchRadius, $fTmpName, $tags, $fTmpName);
-//       $executeStmt->bind_param("s", $tags);
-//   }
-
-  //Warning: mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /Library/WebServer/Documents/project/pages/plotMarkersComplex.php on line 69
-  //Warning: mysqli_stmt::bind_param(): Number of variables doesn't match number of parameters in prepared statement in /Library/WebServer/Documents/project/pages/plotMarkersComplex.php on line 69
+        
 
     
+    
+
+    // if ($_POST['tagSearch'])
+    // {
+    //     $query .= " AND year = ";
+    // }
+
+    // $stmt1 = $dbc->prepare($query);
+    // $stmt1->bind_param("s", $yearStart);
+    // $yearStart = $_POST['yearSearchStart'];
+    // $result = $stmt1->execute();
+    //$stmt1->execute();
+    // $stmt1->close();
+    // $dbc->close();
+    
+
+    // while ($data1 = $result->fetch_assoc($result))
+    // while ($data = $stmt1->fetch_assoc($stmt1))
+    // {
+    //     $myArray1[] = $data1;
+    // }
+    // $coordss = json_encode($myArray);
+
+
+
+    // echo $coordss;
+    // $stmt1->close();
+    // $dbc->close();
+
+}
+
+// if(isset($_POST['mapSearch']))
+// {    
+    
+//     $yearStart = $_POST['yearSearchStart'];
+//     $yearEnd = $_POST['yearSearchEnd'];
+//     $locSearchLat = $_POST['locLatCoords'];
+//     $locSearchLng = $_POST['locLngCoords'];
+//     $searchRadius = $_POST['searchRadius'];
+//     $tags = $_POST['tagSearch'];
+//     $cameraMake = $_POST['cameraMake'];
+//     $cameraModel = $_POST['cameraModel'];
+
+//     $tagArray = [];
+//     $eachTag = explode(',', $tags);
+//     foreach($eachTag as $searchTag)
+//     {
+//       array_push($tagArray, $searchTag);
+//     }
+//     //echo "the year is: $searchTag";
+//     $tagList = json_encode($tagArray);
+//     //$finalList = implode(',', (array)$tagList);
+//     $finalList = trim($tagList, '[]');
+    
+//     //$_SESSION['yearValue'] = $year;
+
+//     // move_uploaded_file($fTmpName, $fDestination);
+//     // $sql = "INSERT INTO images (imagename, imagepath, userid, year, longitude, latitude) VALUES ('$fName', '$fDestination', '$username', $year, $longi, $lati)";
+//     // //$sql = "INSERT INTO images (imagename, imagepath, userid) VALUES ('1', '1', '1')";
+//     // $dbc->query($sql);
+
+//     // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year >= $yearStart and year <= $yearEnd");
 //     $stmt = $dbc->query("SELECT
-//     imageid, imagepath, longitude, latitude, year, thumbnailpath, (
+//     imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
 //       3959 * acos (
 //         cos ( radians($locSearchLat) )
 //         -- cos ( radians(51.5083466) )
@@ -100,8 +178,11 @@ HAVING distance < $searchRadius
 //   AND imageid in
 //   (
 //     select distinct imageid from project.tags
-//     where tag IN ('$tags')
+//     -- where tag IN ('$tags')
+//     where tag IN ($finalList)
 //   )
+//   AND make = '$cameraMake'
+//   AND model = '$cameraModel'
 //   ORDER BY distance
 //   LIMIT 0 , 200;");
 // //$stmt->execute();
@@ -111,9 +192,9 @@ HAVING distance < $searchRadius
 //     $myArray[] = $data;
 // }
 // $coords = json_encode($myArray);
-//echo $coords;
+// //echo $coords;
 
-}
+// }
 
 // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year = $year");
 // //$stmt->execute();
@@ -495,7 +576,9 @@ HAVING distance < $searchRadius
 
         <!-- <h4>Search by year</h4> -->
         <tr>
-        <td><form action='plotMarkersComplex.php' method='post'></td>        
+        <!-- <td><form action='plotMarkers.php' method='post'></td> -->
+        <td><form method='post'></td>        
+       
         Start Year: <input type='text' id='yearSearchStart' name='yearSearchStart' value='4000'><br>
         End Year: <input type='text' id='yearSearchEnd' name='yearSearchEnd' value='5000'><br>
         <!-- <input type='hidden' name='locLatCoords' value='51.5083466'>
@@ -510,11 +593,33 @@ HAVING distance < $searchRadius
         <br>
         </tr>
         <tr>
-        <textarea rows="4" cols="50" id="tagSearch" name="tagSearch">
-        </textarea>
+        <textarea rows="4" cols="50" id="tagSearch" name="tagSearch"></textarea>
         </tr>
         <br>
-        
+        Make: <input type='text' id='cameraMake' name='cameraMake' value='FUJIFILM'><br>
+        Model: <input type='text' id='cameraModel' name='cameraModel' value='X100T'><br>
+        <tr>
+        <td>Camera Make</td>
+        <td>
+          <input type='checkbox' name='cameraMake' value=cameraMake/>
+          <select id="category">
+							<option value="">All Makes</option>
+							<option value="chemistry">NIKON CORPORATION</option>
+							<option value="economics">FUJIFILM</option>
+					</select>
+        </td>
+        </tr>
+        <tr>
+        <td>Camera Model</td>
+        <td>
+          <input type='checkbox' name='cameraModel' value=cameraModel/>
+          <select id="category">
+							<option value="">All Models</option>
+							<option value="chemistry">NIKON D300S</option>
+              <option value="economics">X100T</option>
+					</select>
+        </td>
+        </tr>
 
         <button type='submit' name='mapSearch' />Search for Images</button>
         </table>
@@ -550,7 +655,16 @@ if(isset($_POST['mapSearch']))
     echo "<br>";
 
     echo "<h1>Image Gallery</h1>";
-    //echo $coords;
+    echo $coords;
+    echo "<br>";
+    // echo "tags: ".$tags;
+    // echo "<br>";
+    // echo "tagList: ".$tagList;
+    // //$finalList = implode(',', (array)$tagList);
+    // echo "<br>";
+    // echo "finalList: ".$finalList;
+    // echo "<br>";
+    // // print_r($finalList);
     echo 
     '
     <div class = "imageGallery">
