@@ -17,6 +17,10 @@ if(isset($_POST['mapSearch']))
     $tags = $_POST['tagSearch'];
     $cameraMake = $_POST['cameraMake'];
     $cameraModel = $_POST['cameraModel'];
+    $shutterSpeed = $_POST['shutterSpeed'];
+    $aperture = $_POST['aperture'];
+    $iso = $_POST['iso'];
+    $resolution = $_POST['resolution'];
 
     $tagArray = [];
     $eachTag = explode(',', $tags);
@@ -27,129 +31,222 @@ if(isset($_POST['mapSearch']))
     $tagList = json_encode($tagArray);
     $finalList = trim($tagList, '[]');
 
-    // $stmt = $dbc->query(
-    //     "SELECT longitude, latitude, imagepath
-    //     FROM images 
-    //     WHERE latitude is not null 
-    //     and longitude is not null 
-    //     and year >= $yearStart 
-    //     and year <= $yearEnd
-    //     Limit 0 , 10;");
-    // $myArray = array();
-    // while ($data = $stmt->fetch_assoc())
-    // {
-    //     $myArray[] = $data;
-    // }
-    // $coords = json_encode($myArray);
-
-    // $query = "SELECT * 
-    // FROM project.images
-    // -- WHERE userid IS NOT NULL
-    // WHERE year = ?";
-
-    // // if ($_POST['tagSearch'])
-    // // {
-    // //     $query .= " AND year = ";
-    // // }
-
-    // $stmt1 = $dbc->prepare($query);
-    // $stmt1->bind_param("s", $yearStart);
-    // $yearStart = $_POST['yearSearchStart'];
-    // // $result = $stmt1->execute();
-    // $stmt1->execute();
-    // // $stmt1->close();
-    // // $dbc->close();
-    // $myArray1 = array();
-    // if($result = $dbc->query($query))
-    // {
-    //     while($row = $result->fetch_assoc())
-    //     {
-    //         echo "<br>";
-    //         echo "yo";
-    //     }
-    // }
-    // else
-    // {
-    //     echo "<br>";
-    //     echo "didn't reach"; 
-    // }
-
-
-    // THIS DB CODE DOES THE JOB
-
-    // $sql = "SELECT * 
-    // FROM project.images
-    // -- WHERE userid IS NOT NULL
-    // -- WHERE year = ?
-    // WHERE year = $yearStart";
-    
-    // $result = mysqli_query($dbc, $sql);
-    // //$data1 = mysqli_fetch_assoc($result);
-
-    // $myArray = array();
-    // while ($data1 = mysqli_fetch_assoc($result))
-    // {
-    //     $myArray[] = $data1;
-    // }
-    // $coordsa = json_encode($myArray);
-    // echo $coordsa;
-
-    // ALL THE WAY TO HERE!!
-
-    // $stmt = $dbc->prepare("SELECT * 
-    // FROM project.images
-    // WHERE year = ?");
-
-    // $stmt->bind_param("s", $yearStart);
-    // $yearStart = $_POST['yearSearchStart'];
-
-    // $stmt->execute();
-
-    // if($stmt = $dbc->prepare("SELECT * 
-    // FROM project.images
-    // WHERE year = ?"))
+    //Baseline query
     $query = "SELECT * 
     FROM project.images
     WHERE imageid IS NOT NULL";
 
     if($stmt = $dbc->prepare($query))
     {
-        //if(isset($_POST['tagSearch']))
+        //Adding dynamic query for the location
+        if(strlen($_POST['locLatCoords']) > 0 && strlen($_POST['searchRadius']) > 0)
+        {
+            // echo "location is set";
+            // echo "<br>";
+            $query = "SELECT
+                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
+                  3959 * acos (
+                    cos ( radians($locSearchLat) )
+                    -- cos ( radians(51.5083466) )
+                    * cos( radians( latitude ) )
+                    * cos( radians( longitude ) - radians($locSearchLng) )
+                    -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
+                    + sin ( radians($locSearchLat) )
+                    -- + sin ( radians(51.5083466) )
+                    * sin( radians( latitude ) )
+                  )
+                ) AS distance
+              FROM project.images
+              HAVING distance < $searchRadius";
+            // echo $query;
+            // echo "<br>";
+        }
+        elseif(strlen($_POST['locLatCoords']) > 0 && strlen($_POST['searchRadius']) == 0)
+        {
+            // echo "location is set";
+            // echo "<br>";
+            $query = "SELECT
+                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
+                  3959 * acos (
+                    cos ( radians($locSearchLat) )
+                    -- cos ( radians(51.5083466) )
+                    * cos( radians( latitude ) )
+                    * cos( radians( longitude ) - radians($locSearchLng) )
+                    -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
+                    + sin ( radians($locSearchLat) )
+                    -- + sin ( radians(51.5083466) )
+                    * sin( radians( latitude ) )
+                  )
+                ) AS distance
+              FROM project.images
+              HAVING distance <= 1";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "location is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the year start
+        if(strlen($_POST['yearSearchStart']) > 0 && strlen($_POST['yearSearchEnd']) == 0)
+        {
+            // echo "yearSearchStart is set and yearSearchEnd isn't";
+            // echo "<br>";
+            $query .= " AND year >= $yearStart";
+            // echo $query;
+            // echo "<br>";
+        }
+        elseif(strlen($_POST['yearSearchStart']) == 0 && strlen($_POST['yearSearchEnd']) > 0)
+        {
+            // echo "yearSearchStart is not set and yearSearchEnd is";
+            // echo "<br>";
+            $query .= " AND year <= $yearEnd";
+            // echo $query;
+            // echo "<br>";
+        }
+        elseif(strlen($_POST['yearSearchStart']) > 0 && strlen($_POST['yearSearchEnd']) > 0)
+        {
+            // echo "yearSearchStart is set and yearSearchEnd is set";
+            // echo "<br>";
+            $query .= " AND year >= $yearStart 
+                        AND year <= $yearEnd";
+            // echo $query;
+            // echo "<br>";
+        }
+
+        //Adding dynamic query for the year end
+
+        //Adding dynamic query for the between years
+        
+        //Adding dynamic query for the image tag
         if(strlen($_POST['tagSearch']) > 0)
         {
-            echo "tagSearch is set";
-            echo "<br>";
+            // echo "tagSearch is set";
+            // echo "<br>";
             $query .= " AND imageid IN
             (
                 select distinct imageid from project.tags
-                where tag IN ('dog')
+                where tag IN ($finalList)
             )";
-            echo $query;
-            echo "<br>";
+            // echo $query;
+            // echo "<br>";
         }
-        else
+        // else
+        // {
+        //     echo "tagSearch is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the camera make
+        if(strlen($_POST['cameraMake']) > 0)
         {
-            echo "tagSearch is not set";
-            echo "<br>";
+            // echo "cameraMake is set";
+            // echo "<br>";
+            $query .= " AND make = '$cameraMake'";
+            // echo $query;
+            // echo "<br>";
         }
-        echo "gonna get you some stuff";
-        echo "<br>";
+        // else
+        // {
+        //     echo "cameraMake is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the camera model
+        if(strlen($_POST['cameraModel']) > 0)
+        {
+            // echo "cameraModel is set";
+            // echo "<br>";
+            $query .= " AND model = '$cameraModel'";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "cameraModel is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the camera shutter speed
+        if(strlen($_POST['shutterSpeed']) > 0)
+        {
+            // echo "shutterSpeed is set";
+            // echo "<br>";
+            $query .= " AND shutterspeed = '$shutterSpeed'";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "shutterSpeed is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the camera aperture
+        if(strlen($_POST['aperture']) > 0)
+        {
+            // echo "aperture is set";
+            // echo "<br>";
+            $query .= " AND aperture = '$aperture'";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "aperture is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the camera ISO setting
+        if(strlen($_POST['iso']) > 0)
+        {
+            // echo "iso is set";
+            // echo "<br>";
+            $query .= " AND iso = '$iso'";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "iso is not set";
+        //     echo "<br>";
+        // }
+
+        //Adding dynamic query for the image resolution
+        if(strlen($_POST['resolution']) > 0)
+        {
+            // echo "resolution is set";
+            // echo "<br>";
+            $query .= " AND resolution = '$resolution'";
+            // echo $query;
+            // echo "<br>";
+        }
+        // else
+        // {
+        //     echo "resolution is not set";
+        //     echo "<br>";
+        // }
+
+        // echo "gonna get you some stuff";
+        // echo "<br>";
         //$stmt->bind_param("s", $yearStart);
         $stmt = $dbc->prepare($query);
         $stmt->execute();
         //$stmt->bind_result($result);
         $result = $stmt->get_result();
-        echo $query;
-            echo "<br>";
-        print_r($result);
-            echo "<br>";
+        // echo $query;
+        //     echo "<br>";
+        // print_r($result);
+        //     echo "<br>";
         $myArray = array();
         while ($myrow = $result->fetch_assoc())
         {
             $myArray[] = $myrow;
         }
         $coords2 = json_encode($myArray);
-        //echo $coords2;
+        // echo $coords2;
         //$stmt->fetch();
         //printf("%s is in district %s\n", $yearStart, $result);
     }
@@ -157,133 +254,8 @@ if(isset($_POST['mapSearch']))
     {
         echo "man...tings is bad";
     }
-
-    // $myArray = array();
-    // while ($data2 = $stmt->fetch())
-    // {
-    //     $myArray[] = $data2;
-    // }
-    // $coords2 = json_encode($myArray);
-    // echo $coords2;
-
-
-    
-    
-        
-
-    
-    
-
-    // if ($_POST['tagSearch'])
-    // {
-    //     $query .= " AND year = ";
-    // }
-
-    // $stmt1 = $dbc->prepare($query);
-    // $stmt1->bind_param("s", $yearStart);
-    // $yearStart = $_POST['yearSearchStart'];
-    // $result = $stmt1->execute();
-    //$stmt1->execute();
-    // $stmt1->close();
-    // $dbc->close();
-    
-
-    // while ($data1 = $result->fetch_assoc($result))
-    // while ($data = $stmt1->fetch_assoc($stmt1))
-    // {
-    //     $myArray1[] = $data1;
-    // }
-    // $coordss = json_encode($myArray);
-
-
-
-    // echo $coordss;
-    // $stmt1->close();
-    // $dbc->close();
-
 }
 
-// if(isset($_POST['mapSearch']))
-// {    
-    
-//     $yearStart = $_POST['yearSearchStart'];
-//     $yearEnd = $_POST['yearSearchEnd'];
-//     $locSearchLat = $_POST['locLatCoords'];
-//     $locSearchLng = $_POST['locLngCoords'];
-//     $searchRadius = $_POST['searchRadius'];
-//     $tags = $_POST['tagSearch'];
-//     $cameraMake = $_POST['cameraMake'];
-//     $cameraModel = $_POST['cameraModel'];
-
-//     $tagArray = [];
-//     $eachTag = explode(',', $tags);
-//     foreach($eachTag as $searchTag)
-//     {
-//       array_push($tagArray, $searchTag);
-//     }
-//     //echo "the year is: $searchTag";
-//     $tagList = json_encode($tagArray);
-//     //$finalList = implode(',', (array)$tagList);
-//     $finalList = trim($tagList, '[]');
-    
-//     //$_SESSION['yearValue'] = $year;
-
-//     // move_uploaded_file($fTmpName, $fDestination);
-//     // $sql = "INSERT INTO images (imagename, imagepath, userid, year, longitude, latitude) VALUES ('$fName', '$fDestination', '$username', $year, $longi, $lati)";
-//     // //$sql = "INSERT INTO images (imagename, imagepath, userid) VALUES ('1', '1', '1')";
-//     // $dbc->query($sql);
-
-//     // $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year >= $yearStart and year <= $yearEnd");
-//     $stmt = $dbc->query("SELECT
-//     imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
-//       3959 * acos (
-//         cos ( radians($locSearchLat) )
-//         -- cos ( radians(51.5083466) )
-//         * cos( radians( latitude ) )
-//         * cos( radians( longitude ) - radians($locSearchLng) )
-//         -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
-//         + sin ( radians($locSearchLat) )
-//         -- + sin ( radians(51.5083466) )
-//         * sin( radians( latitude ) )
-//       )
-//     ) AS distance
-//   FROM project.images
-//   HAVING distance < $searchRadius
-//   AND latitude is not null 
-//   AND longitude is not null 
-//   AND year >= $yearStart 
-//   AND year <= $yearEnd
-//   AND imageid in
-//   (
-//     select distinct imageid from project.tags
-//     -- where tag IN ('$tags')
-//     where tag IN ($finalList)
-//   )
-//   AND make = '$cameraMake'
-//   AND model = '$cameraModel'
-//   ORDER BY distance
-//   LIMIT 0 , 200;");
-// //$stmt->execute();
-// $myArray = array();
-// while ($data = $stmt->fetch_assoc())
-// {
-//     $myArray[] = $data;
-// }
-// $coords = json_encode($myArray);
-// //echo $coords;
-
-// }
-
-// $stmt = $dbc->query("SELECT longitude, latitude FROM images WHERE latitude is not null and longitude is not null and year = $year");
-// //$stmt->execute();
-// $myArray = array();
-// while ($data = $stmt->fetch_assoc())
-// {
-//     $myArray[] = $data;
-// }
-// $coords = json_encode($myArray);
-//echo $coords;
-//echo json_encode($myArray);
 
 ?>
 
@@ -423,20 +395,6 @@ if(isset($_POST['mapSearch']))
         var latitude = "51.5074";
         var longitude = "0.1278";
         var locationPlaceCoords = [];
-        //console.log(locationPlaceCoords);
-        //locationPlaceCoords.push('1');
-        //console.log(locationPlaceCoords);
-
-
-        // $.getJSON('coords.json', function(data)
-        // {
-        //     console.log(data);
-        //     for(i in data.coords)
-        //     {
-        //         console.log("latitude: " + data.coords[i].lat + " longitude: " + data.coords[i].long);
-        //     }
-        //     //console.log(data.coords[0].lat);
-        // });
         
       function initAutocomplete() {
           var myLatlng = {lat: 51.5074, lng: 0.1278};
@@ -614,25 +572,6 @@ if(isset($_POST['mapSearch']))
         }
 
         
-
-        // function codeAddress() {
-        // geocoder.geocode({
-        // componentRestrictions: {
-        //     country: 'AU',
-        //     postalCode: '2000'
-        // }
-        // }, function(results, status) {
-        // if (status == 'OK') {
-        //     map.setCenter(results[0].geometry.location);
-        //     alert(results[0].geometry.location);
-            
-        // } else {
-        //     window.alert('Geocode was not successful for the following reason: ' + status);
-        // }
-        // });
-        // }
-        
-        
     }
 
     
@@ -674,32 +613,290 @@ if(isset($_POST['mapSearch']))
         <textarea rows="4" cols="50" id="tagSearch" name="tagSearch"></textarea>
         </tr>
         <br>
-        Make: <input type='text' id='cameraMake' name='cameraMake' value='FUJIFILM'><br>
-        Model: <input type='text' id='cameraModel' name='cameraModel' value='X100T'><br>
+        <!-- Make: <input type='text' id='cameraMake' name='cameraMake' value='FUJIFILM'><br>
+        Model: <input type='text' id='cameraModel' name='cameraModel' value='X100T'><br> -->
         <tr>
         <td>Camera Make</td>
         <td>
-          <input type='checkbox' name='cameraMake' value=cameraMake/>
-          <select id="category">
+          <!-- <input type='checkbox' name='cameraMake' value=cameraMake/> -->
+          <select id="metadata" name='cameraMake'>
 							<option value="">All Makes</option>
-							<option value="chemistry">NIKON CORPORATION</option>
-							<option value="economics">FUJIFILM</option>
+							<option value="NIKON CORPORATION">NIKON CORPORATION</option>
+							<option value="FUJIFILM">FUJIFILM</option>
+					</select>
+        </td>
+        </tr>
+        <!-- <?php
+            //query to get values for camera make drop down list
+            $makeQuery = "SELECT DISTINCT make
+            FROM project.images
+            WHERE make <>''";
+
+            //query to get values for camera model drop down list
+            $modelQuery = "SELECT DISTINCT model
+            FROM project.images
+            WHERE model <>''";
+
+            //query to get values for shutter speed drop down list
+            $shutterspeedQuery = "SELECT DISTINCT shutterspeed
+            FROM project.images
+            WHERE shutterspeed <>''";
+
+            //query to get values for aperture drop down list
+            $apertureQuery = "SELECT DISTINCT aperture
+            FROM project.images
+            WHERE aperture <>''";
+
+            //query to get values for iso drop down list
+            $isoQuery = "SELECT DISTINCT iso
+            FROM project.images
+            WHERE iso <>''";
+
+            //query to get values for resolution drop down list
+            $resolutionQuery = "SELECT DISTINCT resolution
+            FROM project.images
+            WHERE resolution like '%dpi%'";
+
+            //prepare the drop down list queries
+            $makeStmt = $dbc->prepare($makeQuery);
+            // $modelStmt = $dbc->prepare($modelQuery);
+            // $shutterspeedStmt = $dbc->prepare($shutterspeedQuery);
+            // $apertureStmt = $dbc->prepare($apertureQuery);
+            // $isoStmt = $dbc->prepare($isoQuery);
+            // $resolutionStmt = $dbc->prepare($resolutionQuery);
+            
+            //execute the drop down list queries
+            $makeStmt->execute();
+            //$modelStmt->execute();
+            //$shutterspeedStmt->execute();
+            // $apertureStmt->execute();
+            // $isoStmt->execute();
+            //$resolutionStmt->execute();
+            
+            //get the results for the drop down list queries
+            $makeResult = $makeStmt->get_result();
+            //$modelResult = $modelStmt->get_result();
+            //$shutterspeedResult = $shutterspeedStmt->get_result();
+            // $apertureResult = $apertureStmt->get_result();
+            // $isoResult = $isoStmt->get_result();
+            //$resolutionResult = $resolutionStmt->get_result();
+
+            //create the arrays for the drop down lists
+            //make
+            $makeArray = array();
+            while ($makeRow = $makeResult->fetch_assoc())
+            {
+                $makeArray[] = $makeRow;
+            }
+            $makeDropDownListValues = json_encode($makeArray);
+
+            $makeresult=mysqli_query($dbc,$makeQuery);
+
+            echo "<br>";
+            echo $makeDropDownListValues;
+            echo "<br>";
+            print_r($makeArray);
+
+            // while($rows=mysqli_fetch_array($makeresult,MYSQLI_NUM))
+            // {
+            //     //echo "<option value='$row>$row</option>";
+            //     // echo "<br>";
+            //     // echo "next data";
+            //     // echo "<br>";
+            //     // printf ("%s (%s)\n",$row[0],$row[1]);
+            //     echo "<br>";
+            //     echo $rows[0];
+            // }
+            echo "
+                <tr>
+                <td>Camera Make</td>
+                <td>
+                <select id='metadata' name='cameraMake'>
+                    <option value=''>All Makes</option>";
+                while($row=mysqli_fetch_array($makeresult,MYSQLI_NUM))
+                {
+                    echo "<option value='".$row[0].">".$row[0]."</option>";
+                    
+                              
+                }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+            // for (i in coords)
+            // {
+            //     //fullGallery += '<a href = "' + coords[i].imagepath + '" data-lightbox = "gallery"><img src = "../uploads/thumbs/247191_10152912028740936_1294872110749899160_n_tn 2.jpg">';
+            //     fullGallery += '<a href = "' + coords[i].imagepath + '" data-lightbox = "gallery"><img src = "'+ coords[i].thumbnailpath + '">';
+            //     //console.log("hi " + coords[i].thumbnailpath);
+            //     //console.log("hi " + coords[i].imageid);
+                                        
+            // }
+
+            
+            
+            // for(i in $makeDropDownListValues)
+            // for($i = 0; $i <= 4; $i++)
+            // {
+            //     echo "<option value='$makeRow[$i]>$makeRow[$i]</option>";
+            // }
+
+            // foreach($makeDropDownListValues as $makeOptions)
+            // {
+            //     echo "<option value='$makeOptions[0]>$makeOptions[0]</option>";
+            // }                        
+            
+            // echo "<select name='cameraMake'>";
+            // foreach($makeDropDownListValues as $eachMake)
+            // {
+            //     echo "<tr>";          
+            //     echo "<td>$eachMake</td>";            
+            //     echo "<td>";            
+            //     echo "<input type='checkbox' name='options[]' value=$eachMake/>";              
+            //     echo "</td>";            
+            //     echo "</tr>";   
+            // }
+            // // while ($row = mysql_fetch_array($makeResult)) {
+            // //     echo "<option value='" . $row['make'] ."'>" . $row['make'] ."</option>";
+            // // }
+            // echo "</select>";
+
+            //model
+            // $modelArray = array();
+            // while ($modelRow = $modelResult->fetch_assoc())
+            // {
+            //     $modelArray[] = $modelRow;
+            // }
+            // $modelDropDownListValues = json_encode($modelArray);
+
+            // echo "<br>";
+            // echo $modelDropDownListValues;
+            // echo "<br>";
+
+            //shutterSpeed
+            // $shutterSpeedArray = array();
+            // while ($shutterSpeedRow = $shutterspeedResult->fetch_assoc())
+            // {
+            //     $shutterSpeedArray[] = $shutterSpeedRow;
+            // }
+            // $shutterSpeedDropDownListValues = json_encode($shutterSpeedArray);
+
+            // echo "<br>";
+            // echo $shutterSpeedDropDownListValues;
+            // echo "<br>";
+
+            //aperture
+            // $apertureArray = array();
+            // while ($apertureRow = $apertureResult->fetch_assoc())
+            // {
+            //     $apertureArray[] = $apertureRow;
+            // }
+            // $apertureDropDownListValues = json_encode($apertureArray);
+
+            // echo "<br>";
+            // echo $apertureDropDownListValues;
+            // echo "<br>";
+
+            //iso
+            // $isoArray = array();
+            // while ($isoRow = $isoResult->fetch_assoc())
+            // {
+            //     $isoArray[] = $isoRow;
+            // }
+            // $isoDropDownListValues = json_encode($isoArray);
+
+            // echo "<br>";
+            // echo $isoDropDownListValues;
+            // echo "<br>";
+
+            //resolution
+            // $resolutionArray = array();
+            // while ($resolutionRow = $resolutionResult->fetch_assoc())
+            // {
+            //     $resolutionArray[] = $resolutionRow;
+            // }
+            // $resolutionDropDownListValues = json_encode($resolutionArray);
+
+            // echo "<br>";
+            // echo $resolutionDropDownListValues;
+            // echo "<br>";
+
+
+            echo
+            "
+            <tr>
+        <td>
+          
+          <select id='metadata' name='cameraModelll'>
+							
+					</select>
+        </td>
+        </tr>
+            
+            ";
+        ?> -->
+        
+        <tr>
+        <td>Camera Model</td>
+        <td>
+          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          <select id="metadata" name='cameraModel'>
+							<option value="">All Models</option>
+							<option value="NIKON D300S">NIKON D300S</option>
+                            <option value="X100T">X100T</option>
 					</select>
         </td>
         </tr>
         <tr>
-        <td>Camera Model</td>
+        <td>Shutter Speed</td>
         <td>
-          <input type='checkbox' name='cameraModel' value=cameraModel/>
-          <select id="category">
-							<option value="">All Models</option>
-							<option value="chemistry">NIKON D300S</option>
-              <option value="economics">X100T</option>
+          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          <select id="metadata" name='shutterSpeed'>
+							<option value="">Any Speed</option>
+							<option value="1/250">1/250</option>
+                            <option value="1/400">1/400</option>
+                            <option value="1/500">1/500</option>
+                            <option value="1/800">1/800</option>
 					</select>
         </td>
         </tr>
-
-        <button type='submit' name='mapSearch' />Search for Images</button>
+        <tr>
+        <td>Aperture</td>
+        <td>
+          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          <select id="metadata" name='aperture'>
+							<option value="">Any f stop</option>
+							<option value="f/1.8">f/1.8</option>
+                            <option value="f/2.0">f/2.0</option>
+                            <option value="f/2.8">f/2.8</option>
+					</select>
+        </td>
+        </tr>
+        <tr>
+        <td>ISO</td>
+        <td>
+          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          <select id="metadata" name='iso'>
+							<option value="">Any Setting</option>
+							<option value="800">800</option>
+                            <option value="2500">2500</option>
+					</select>
+        </td>
+        </tr>
+        <tr>
+        <td>Resolution</td>
+        <td>
+          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          <select id="metadata" name='resolution'>
+							<option value="">Any Resolution</option>
+                            <option value="72dpi">72dpi</option>
+                            <option value="300dpi">300dpi</option>
+					</select>
+        </td>
+        </tr>
+        <tr>
+            <td><button type='submit' name='mapSearch' />Search for Images</button></td>
+        </tr>
         </table>
     </div>
     

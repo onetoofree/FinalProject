@@ -386,6 +386,8 @@ function displayTags($fDestination)
     }
     echo "there are ".count($finalTags)." tags selected";
     echo "<br>";
+    echo "the final tags are: ".$selection;
+    echo "<br>";
     $_SESSION['listOfTags'] = $finalTags;
     $listOfTags = $_SESSION['listOfTags'];
     print_r($listOfTags);
