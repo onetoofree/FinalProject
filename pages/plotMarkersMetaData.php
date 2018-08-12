@@ -27,20 +27,20 @@ if(isset($_POST['mapSearch']))
     $tagList = json_encode($tagArray);
     $finalList = trim($tagList, '[]');
 
-    $stmt = $dbc->query(
-        "SELECT longitude, latitude, imagepath
-        FROM images 
-        WHERE latitude is not null 
-        and longitude is not null 
-        and year >= $yearStart 
-        and year <= $yearEnd
-        Limit 0 , 10;");
-    $myArray = array();
-    while ($data = $stmt->fetch_assoc())
-    {
-        $myArray[] = $data;
-    }
-    $coords = json_encode($myArray);
+    // $stmt = $dbc->query(
+    //     "SELECT longitude, latitude, imagepath
+    //     FROM images 
+    //     WHERE latitude is not null 
+    //     and longitude is not null 
+    //     and year >= $yearStart 
+    //     and year <= $yearEnd
+    //     Limit 0 , 10;");
+    // $myArray = array();
+    // while ($data = $stmt->fetch_assoc())
+    // {
+    //     $myArray[] = $data;
+    // }
+    // $coords = json_encode($myArray);
 
     // $query = "SELECT * 
     // FROM project.images
@@ -105,22 +105,51 @@ if(isset($_POST['mapSearch']))
 
     // $stmt->execute();
 
-    if($stmt = $dbc->prepare("SELECT * 
+    // if($stmt = $dbc->prepare("SELECT * 
+    // FROM project.images
+    // WHERE year = ?"))
+    $query = "SELECT * 
     FROM project.images
-    WHERE year = ?"))
+    WHERE imageid IS NOT NULL";
+
+    if($stmt = $dbc->prepare($query))
     {
+        //if(isset($_POST['tagSearch']))
+        if(strlen($_POST['tagSearch']) > 0)
+        {
+            echo "tagSearch is set";
+            echo "<br>";
+            $query .= " AND imageid IN
+            (
+                select distinct imageid from project.tags
+                where tag IN ('dog')
+            )";
+            echo $query;
+            echo "<br>";
+        }
+        else
+        {
+            echo "tagSearch is not set";
+            echo "<br>";
+        }
         echo "gonna get you some stuff";
-        $stmt->bind_param("s", $yearStart);
+        echo "<br>";
+        //$stmt->bind_param("s", $yearStart);
+        $stmt = $dbc->prepare($query);
         $stmt->execute();
         //$stmt->bind_result($result);
-        $result = $stmt->Get_result();
+        $result = $stmt->get_result();
+        echo $query;
+            echo "<br>";
+        print_r($result);
+            echo "<br>";
         $myArray = array();
         while ($myrow = $result->fetch_assoc())
         {
             $myArray[] = $myrow;
         }
         $coords2 = json_encode($myArray);
-        echo $coords2;
+        //echo $coords2;
         //$stmt->fetch();
         //printf("%s is in district %s\n", $yearStart, $result);
     }
