@@ -1,5 +1,5 @@
 <?php
-// this file contains all php functions to inclue in main script
+// this file contains all php upload related functions to include in main script
 function createThumbnail($fileName)
 {
   $im = imagecreatefromjpeg('../uploads/'.$fileName);
@@ -67,14 +67,14 @@ function displayYearField()
   echo "</div>";
 }
 
-function displayMapWithSearchBox()
+function displayUploadMapWithSearchBox()
 {
   echo "<div class='locationSelector'>";
   echo "<table>";
   echo '<input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <div id="map"></div>
     <div id="result"></div>';
-  echo '<script src="../pages/js/map.js"></script>';
+  echo '<script src="../pages/js/uploadMap.js"></script>';
   echo "<tr>";
   echo "</table>";
   echo "</div>";
@@ -96,7 +96,6 @@ function displayTagSelector($fDestination)
   $googleVisionApiOutput = getVisionTags($fDestination);
   $tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $googleVisionApiOutput);
   echo "<div class='tagSelector'>";
-  //echo "<form id='tagSelection' action='onePageUpload.php' method='post'>"; 
   echo "<form id='tagSelection' method='get'>"; 
   echo "<table cellspacing='3'>";   
   echo "<tr id='heading'>";          
@@ -116,7 +115,6 @@ function displayTagSelector($fDestination)
   echo "<tr>";
   echo "<td></td>";
   echo "<td>";
-  //echo "<input type='submit' value='Click To See Comparison' id='performSearchButton'/>";
   echo "<input type='submit' value='Go!' />";
   echo "</td>";
   echo "<tr>";
@@ -202,10 +200,6 @@ function uploadTheSelectedImage()
 function getVisionTags($selectedFile)
 {
   $resultingTags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $selectedFile");
-  // // echo "is this an array?";
-  // // echo "<br>";
-  // // echo $resultingTags;
-  // $_SESSION['tags'] = $resultingTags;
   return $resultingTags;
 }
 
@@ -213,7 +207,6 @@ function readExifFromUploadedImages($selectedFile)
 {
   
   $exif_data = exif_read_data($selectedFile);
-  // if(!$exif_data['ExposureTime'])
   if(empty($exif_data))
   {
     echo "<br>";
@@ -224,7 +217,6 @@ function readExifFromUploadedImages($selectedFile)
     echo "<br>";
     echo "not empty tings";
     echo "<br>";
-    //print_r($exif_data);
   }
   $shutterSpeed = $exif_data['ExposureTime'];
   $shutterSpeedMultiplier = explode('/', $shutterSpeed);
@@ -280,8 +272,6 @@ function readExifFromUploadedImages($selectedFile)
 
   $resolution = $exif_data['XResolution'];
   $resMultiplier = explode('/', $resolution);
-  // echo "<br>";
-  // print_r($resMultiplier);
   if($resMultiplier[0] > 0)
   {
     $actualResolution = $resMultiplier[0].'dpi';
@@ -296,7 +286,6 @@ function readExifFromUploadedImages($selectedFile)
             'Make'=>$exif_data['Make'],
             'Model'=>$exif_data['Model'],            
             'ExposureTime'=>$actualShutterSpeed,
-            // 'FNumber'=>$actualFStop,
             'ApertureFNumber'=>$exif_data['COMPUTED']['ApertureFNumber'],
             'ISOSpeedRatings'=>$exif_data['ISOSpeedRatings'],
             'XResolution'=>$actualResolution,
@@ -431,9 +420,6 @@ function addTagsToImages()
     VALUES 
     ('$tagValue', '$imageId')";
     $dbc->query($insertTagSql);  
-  }
-  
+  }  
 }
-
-
 ?>
