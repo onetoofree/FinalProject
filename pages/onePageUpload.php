@@ -141,92 +141,13 @@ if(isset($_FILES['file']))
 {
     displaySelectedImage();
     displayYearField();
-    displayMapWithSearchBox();
-    //displayTagSelector($fDestination);
+    displayUploadMapWithSearchBox();
     displayUploadButton();
-
-    // $result = exec("python ../pythonStuff/getFiles.py /tmp");
-    // echo "tags";
-    // echo "<br>";
-    // echo $result;
-    // echo "<br>";
-    // $result_array = json_decode($result);
-    // $resArray = [1,2,3,4,5];
-    // foreach($result_array as $row)
-    // //foreach($resArray as $row)
-    // {
-    //   echo $row . "<br>";
-    // }
-
-    // echo "<br>";
-    // echo "new stuff";
-    // echo "<br>";
-    // exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py 2>&1", $output, $return);
-    // if (!$return) {
-    //   echo "image recognition ran successfully";
-    // } else {
-    //   echo "it flopped";
-    //   echo "<br>";
-    //   print_r($output); 
-    //   echo "<br>";
-    //   echo $return;
-    // }
-
     
-    echo "new stuff";
-    echo "<br>";
-    echo $fDestination;
-    echo "<br>";
-    //getVisionTags($fDestination);
     readExifFromUploadedImages($fDestination);
-    // displayTagSelector($tags);
     
-    //$tags = exec("python /Library/WebServer/Documents/project/gVision/visionex/imageRecognition.py");
-    //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fName");
-    //$tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py ../uploads/10712860_10152339735885936_7902406205857066950_n.jpg 2>&1", $output, $return);
-    // $tags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $fDestination");
-    //$tags = exec("python ../pythonStuff/getFiles.py /tmp");
-    // echo "tags";
-    // echo "<br>";
-    // echo $fDestination;
-    // echo "<br>";
-    // echo "python /Library/WebServer/Documents/project/pages/visionex/imageRecognitionWithFilename.py $fDestination 2>&1";
-    // echo "<br>";
-    // echo $tags;
-    // $tagsArray = json_decode($tags);
-    
-    // foreach($tagsArray as $row)
-    // //foreach($tags as $row)
-    // {
-    //     echo $row . "<br>";
-    // }
-
-    // echo ("yooooo");
-    //print($tagsArray);
 }
 ?>
-
-<!-- <div class="tagSelector">
-  <form id="countrySelection" action="onePageUpload.php" method="POST">
-    <table cellspacing="3">
-          <tr id="heading">
-            <td>Tags</td>
-          </tr>				
-          <tr>
-            <td>France:</td>
-            <td>
-              <input type="checkbox" name="france" value="France"/>
-            </td>
-          </tr>
-          <tr>
-            <td>Germany:</td>
-            <td>
-              <input type="checkbox" name="germany" value="Germany"/>
-            </td>
-          </tr>
-    </table>
-  </form>
-</div> -->
 
 <div class="uploadButton">
 <table>
