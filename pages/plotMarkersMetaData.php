@@ -661,7 +661,7 @@ $myArray = performSearch();
             WHERE resolution like '%dpi%'";
 
             //prepare the drop down list queries
-            $makeStmt = $dbc->prepare($makeQuery);
+            // $makeStmt = $dbc->prepare($makeQuery);
             // $modelStmt = $dbc->prepare($modelQuery);
             // $shutterspeedStmt = $dbc->prepare($shutterspeedQuery);
             // $apertureStmt = $dbc->prepare($apertureQuery);
@@ -669,15 +669,15 @@ $myArray = performSearch();
             // $resolutionStmt = $dbc->prepare($resolutionQuery);
             
             //execute the drop down list queries
-            $makeStmt->execute();
-            //$modelStmt->execute();
+            // $makeStmt->execute();
+            // $modelStmt->execute();
             //$shutterspeedStmt->execute();
             // $apertureStmt->execute();
             // $isoStmt->execute();
             //$resolutionStmt->execute();
             
             //get the results for the drop down list queries
-            $makeResult = $makeStmt->get_result();
+            //$makeResult = $makeStmt->get_result();
             //$modelResult = $modelStmt->get_result();
             //$shutterspeedResult = $shutterspeedStmt->get_result();
             // $apertureResult = $apertureStmt->get_result();
@@ -693,7 +693,7 @@ $myArray = performSearch();
             // }
             // $makeDropDownListValues = json_encode($makeArray);
 
-            $makeresult=mysqli_query($dbc,$makeQuery);
+            
 
             // echo "<br>";
             // echo $makeDropDownListValues;
@@ -712,6 +712,15 @@ $myArray = performSearch();
             //     echo "<br>";
             //     echo $rows[0];
             // }
+
+            $makeResult=mysqli_query($dbc,$makeQuery);
+            $modelResult=mysqli_query($dbc,$modelQuery);
+            $shutterspeedResult=mysqli_query($dbc,$shutterspeedQuery);
+            $apertureResult=mysqli_query($dbc,$apertureQuery);
+            $isoResult=mysqli_query($dbc,$isoQuery);
+            $resolutionResult=mysqli_query($dbc,$resolutionQuery);
+            
+            //Populate the camera make drop down list
             echo "
                 <tr>
                 <td>Camera Make</td>
@@ -719,23 +728,107 @@ $myArray = performSearch();
                 <select id='metadata' name='cameraMake'>
                     <option value=''>All Makes</option>";
 
-                    while($row = mysqli_fetch_array($makeresult))
+                    while($row = mysqli_fetch_array($makeResult))
                     {
                         echo "<option value='$row[0]'>$row[0]</option>";
-                        //echo "<option value='$row[0]'>$row[0]</option>";
                     }
-
-                // while($row=mysqli_fetch_array($makeresult,MYSQLI_NUM))
-                // {
-                //     echo "<option value='".$row[0].">".$row[0]."</option>";
-                    
-                              
-                // }
             echo "    
                 </select>
                 </td>
                 </tr>
             ";
+
+
+            //Populate the camera model drop down list
+            echo "
+                <tr>
+                <td>Camera Model</td>
+                <td>
+                <select id='metadata' name='cameraModel'>
+                    <option value=''>All Models</option>";
+
+                    while($row = mysqli_fetch_array($modelResult))
+                    {
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+
+            //Populate the photo shutter speed drop down list
+            echo "
+                <tr>
+                <td>Shutter Speed</td>
+                <td>
+                <select id='metadata' name='shutterSpeed'>
+                    <option value=''>Any Speed Setting</option>";
+
+                    while($row = mysqli_fetch_array($shutterspeedResult))
+                    {
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+
+            //Populate the photo aperture drop down list
+            echo "
+                <tr>
+                <td>Aperture</td>
+                <td>
+                <select id='metadata' name='aperture'>
+                    <option value=''>Any F Stop</option>";
+
+                    while($row = mysqli_fetch_array($apertureResult))
+                    {
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+
+            //Populate the photo iso drop down list
+            echo "
+                <tr>
+                <td>ISO</td>
+                <td>
+                <select id='metadata' name='iso'>
+                    <option value=''>Any ISO Setting</option>";
+
+                    while($row = mysqli_fetch_array($isoResult))
+                    {
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+
+            //Populate the photo resolution drop down list
+            echo "
+                <tr>
+                <td>Resolutions</td>
+                <td>
+                <select id='metadata' name='resolution'>
+                    <option value=''>Any Resolution</option>";
+
+                    while($row = mysqli_fetch_array($resolutionResult))
+                    {
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+            echo "    
+                </select>
+                </td>
+                </tr>
+            ";
+
             // for (i in coords)
             // {
             //     //fullGallery += '<a href = "' + coords[i].imagepath + '" data-lightbox = "gallery"><img src = "../uploads/thumbs/247191_10152912028740936_1294872110749899160_n_tn 2.jpg">';
@@ -848,10 +941,10 @@ $myArray = performSearch();
         //     ";
         ?>
         
-        <tr>
+        <!-- <tr>
         <td>Camera Model</td>
         <td>
-          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+
           <select id="metadata" name='cameraModel'>
 							<option value="">All Models</option>
 							<option value="NIKON D300S">NIKON D300S</option>
@@ -862,7 +955,7 @@ $myArray = performSearch();
         <tr>
         <td>Shutter Speed</td>
         <td>
-          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+         
           <select id="metadata" name='shutterSpeed'>
 							<option value="">Any Speed</option>
 							<option value="1/250">1/250</option>
@@ -875,7 +968,7 @@ $myArray = performSearch();
         <tr>
         <td>Aperture</td>
         <td>
-          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          
           <select id="metadata" name='aperture'>
 							<option value="">Any f stop</option>
 							<option value="f/1.8">f/1.8</option>
@@ -887,7 +980,7 @@ $myArray = performSearch();
         <tr>
         <td>ISO</td>
         <td>
-          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+          
           <select id="metadata" name='iso'>
 							<option value="">Any Setting</option>
 							<option value="800">800</option>
@@ -898,14 +991,14 @@ $myArray = performSearch();
         <tr>
         <td>Resolution</td>
         <td>
-          <!-- <input type='checkbox' name='cameraModel' value=cameraModel/> -->
+         
           <select id="metadata" name='resolution'>
 							<option value="">Any Resolution</option>
                             <option value="72dpi">72dpi</option>
                             <option value="300dpi">300dpi</option>
 					</select>
         </td>
-        </tr>
+        </tr> -->
         <tr>
             <td><button type='submit' name='mapSearch' />Search for Images</button></td>
         </tr>

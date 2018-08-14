@@ -40,44 +40,38 @@ function performSearch()
             // echo "location is set";
             // echo "<br>";
             $query = "SELECT
-                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
+                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, shutterspeed, aperture, iso, resolution, (
                   3959 * acos (
                     cos ( radians($locSearchLat) )
-                    -- cos ( radians(51.5083466) )
                     * cos( radians( latitude ) )
                     * cos( radians( longitude ) - radians($locSearchLng) )
-                    -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
                     + sin ( radians($locSearchLat) )
-                    -- + sin ( radians(51.5083466) )
                     * sin( radians( latitude ) )
                   )
                 ) AS distance
               FROM project.images
               HAVING distance < $searchRadius";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         elseif(strlen($_POST['locLatCoords']) > 0 && strlen($_POST['searchRadius']) == 0)
         {
             // echo "location is set";
             // echo "<br>";
             $query = "SELECT
-                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, (
+                imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, shutterspeed, aperture, iso, resolution, (
                   3959 * acos (
                     cos ( radians($locSearchLat) )
-                    -- cos ( radians(51.5083466) )
                     * cos( radians( latitude ) )
                     * cos( radians( longitude ) - radians($locSearchLng) )
-                    -- * cos( radians( longitude ) - radians(-0.10827819999997246) )
                     + sin ( radians($locSearchLat) )
-                    -- + sin ( radians(51.5083466) )
                     * sin( radians( latitude ) )
                   )
                 ) AS distance
               FROM project.images
               HAVING distance <= 1";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
@@ -126,8 +120,8 @@ function performSearch()
                 select distinct imageid from project.tags
                 where tag IN ($finalList)
             )";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+            echo "<br>";
         }
         // else
         // {
@@ -142,7 +136,7 @@ function performSearch()
             // echo "<br>";
             $query .= " AND make = '$cameraMake'";
             echo $query;
-            // echo "<br>";
+             echo "<br>";
         }
         // else
         // {
@@ -156,8 +150,8 @@ function performSearch()
             // echo "cameraModel is set";
             // echo "<br>";
             $query .= " AND model = '$cameraModel'";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
@@ -171,8 +165,8 @@ function performSearch()
             // echo "shutterSpeed is set";
             // echo "<br>";
             $query .= " AND shutterspeed = '$shutterSpeed'";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
@@ -186,8 +180,8 @@ function performSearch()
             // echo "aperture is set";
             // echo "<br>";
             $query .= " AND aperture = '$aperture'";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
@@ -201,8 +195,8 @@ function performSearch()
             // echo "iso is set";
             // echo "<br>";
             $query .= " AND iso = '$iso'";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
@@ -216,8 +210,8 @@ function performSearch()
             // echo "resolution is set";
             // echo "<br>";
             $query .= " AND resolution = '$resolution'";
-            // echo $query;
-            // echo "<br>";
+             echo $query;
+             echo "<br>";
         }
         // else
         // {
