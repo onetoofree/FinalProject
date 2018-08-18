@@ -34,11 +34,17 @@ else { // Email doesn't already exist in a database, proceed...
     //$sql = "INSERT INTO users (first_name, last_name, email, password, hash) " 
     //        . "VALUES ('$first_name','$last_name','$email','$password', '$hash')";
 
+    // $sql = "INSERT INTO user (userid, username, email, password, active) " 
+    //         . "VALUES ($userid,'$username','$email','$password', '$active')";
+    
+    $passwordmd5 = md5($password);
     $sql = "INSERT INTO user (userid, username, email, password, active) " 
-            . "VALUES ($userid,'$username','$email','$password', '$active')";
+            . "VALUES ($userid,'$username','$email','$passwordmd5', '$active')";
 
             //echo "New record has id: " . $userid;
             header("location: home.php");
+            //mkdir('../../../../projectUsers/userid/', 0777, true);
+            mkdir('/Users/peds/projectUsers', 0777, true);
 
     // Add user to the database
     if ( $dbc->query($sql) ){
