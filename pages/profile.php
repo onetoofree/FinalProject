@@ -19,7 +19,7 @@ else {
 <head>
   <meta charset="UTF-8">
   <title>Welcome <?= $email ?></title>
-  <?php //include 'css/css.html'; ?>
+  <?php include 'css/css.html'; ?>
 </head>
 
 <body>

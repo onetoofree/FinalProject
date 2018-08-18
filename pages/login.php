@@ -19,7 +19,7 @@ else { // User exists
     $user = $result->fetch_assoc();
     //echo $user;
 
-    if($_POST['password'] == $user['password'])
+    if(md5($_POST['password']) == $user['password'])
     {
     //if ( password_verify($_POST['password'], $user['password']) ) {
         
