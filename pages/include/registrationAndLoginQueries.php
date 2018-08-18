@@ -26,4 +26,5 @@ $insertNewRegisteredUserQuery = "INSERT INTO user
 (userid, username, email, password, active) 
 VALUES ($userid,'$username','$email','$passwordmd5', '$active')";
 
+
 ?>
