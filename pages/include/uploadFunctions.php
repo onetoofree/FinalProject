@@ -147,6 +147,7 @@ function displayTagSelector($fDestination)
 function uploadTheSelectedImage()
 {
   require '../dbconnection/db_connect.php';
+  require 'include/uploadQueries.php';
   $fileName = $_SESSION['filename'];
   $fileDestination = '../uploads/'.$_SESSION['filename'];
   $thumbDestination = '../uploads/thumbnails/'.$_SESSION['filename'];
@@ -165,35 +166,36 @@ function uploadTheSelectedImage()
   $resolution = $_SESSION['XResolution'];
   //$resolution = !empty($_SESSION['XResolution']) ? "'$resolution'" : "NULL";
   move_uploaded_file($fTmpName, $fDestination);
-  $sql = "INSERT INTO images 
-  (imagename, 
-  imagepath, 
-  thumbnailpath, 
-  year, 
-  longitude, 
-  latitude, 
-  username,
-  make,
-  model,
-  shutterspeed,
-  aperture,
-  iso,
-  resolution) 
-  VALUES 
-  ('$fileName', 
-  '$fileDestination', 
-  '$thumbDestination', 
-  $year, 
-  $longi, 
-  $lati, 
-  '$username',
-  '$make',
-  '$model',
-  '$shutterspeed',
-  '$aperture',
-  '$iso',
-  '$resolution')";
-  $dbc->query($sql);
+  // $sql = "INSERT INTO images 
+  // (imagename, 
+  // imagepath, 
+  // thumbnailpath, 
+  // year, 
+  // longitude, 
+  // latitude, 
+  // username,
+  // make,
+  // model,
+  // shutterspeed,
+  // aperture,
+  // iso,
+  // resolution) 
+  // VALUES 
+  // ('$fileName', 
+  // '$fileDestination', 
+  // '$thumbDestination', 
+  // $year, 
+  // $longi, 
+  // $lati, 
+  // '$username',
+  // '$make',
+  // '$model',
+  // '$shutterspeed',
+  // '$aperture',
+  // '$iso',
+  // '$resolution')";
+  $dbc->query($insertSelectedImageToDatabaseQuery);
+  //header("location: onePageUpload.php");
   header("location: successfulUpload.php");
 }
 
@@ -391,6 +393,7 @@ function displayTags($fDestination)
 function addTagsToImages()
 {
   require '../dbconnection/db_connect.php';
+  require 'include/uploadQueries.php';
   
   $tagsToBeAdded = $_SESSION['listOfTags'];
   $fileName = $_SESSION['filename'];
@@ -402,11 +405,12 @@ function addTagsToImages()
 
   foreach($tagsToBeAdded as $tagValue)
   {
-    $getImageId = $dbc->query("SELECT imageid
-    FROM project.images
-    WHERE imagename = '$fileName'
-    ORDER BY imageid desc
-    LIMIT 1;");
+    // $getImageId = $dbc->query("SELECT imageid
+    // FROM project.images
+    // WHERE imagename = '$fileName'
+    // ORDER BY imageid desc
+    // LIMIT 1;");
+    $getImageId = $dbc->query($getImageIdQuery);
 
     $returnedImageId = $getImageId->fetch_assoc();
     $imageId = $returnedImageId['imageid'];
@@ -414,12 +418,16 @@ function addTagsToImages()
     // echo "<br>";
     // echo $imageId;
     
-
+//can't get this query out for some reason....look into later
     $insertTagSql = "INSERT INTO tags 
     (tag, imageId) 
     VALUES 
     ('$tagValue', '$imageId')";
     $dbc->query($insertTagSql);  
+    // $_SESSION['tagValue'] = $tagValue;
+
+    //$insertTagSql = $insertTagsIntoDatabaseQuery;
+    //$dbc->query($insertTagSql);  
   }  
 }
 ?>

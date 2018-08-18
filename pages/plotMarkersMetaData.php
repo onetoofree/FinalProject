@@ -3,6 +3,7 @@
 
 require '../pages/include/searchFunctions.php';
 require '../dbconnection/db_connect.php';
+require 'include/metadataDropDownListQueries.php';
 //session_start();
 
 ob_start();
@@ -147,11 +148,9 @@ $myArray = performSearch();
         var latitude = "51.5074";
         var longitude = "0.1278";
         var locationPlaceCoords = [];
-        // var minZoomLevel = 13;
-        //var opt = { minZoom: 6, maxZoom: 9 };
         
       function initAutocomplete() {
-          var myLatlng = {lat: 51.5074, lng: 0.1278};
+          var myLatlng = {lat: 51.5219, lng: -0.1302};
         //   var opt = { minZoom: 6, maxZoom: 9 };
           infowindow = new google.maps.InfoWindow();
           var map = new google.maps.Map(document.getElementById('map'), {
@@ -175,12 +174,6 @@ $myArray = performSearch();
           searchBox.setBounds(map.getBounds());
         });
 
-        
-//         // Limit the zoom level
-
-//    google.maps.event.addListener(map, 'zoom_changed', function() {
-//      if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
-//    });
 
         var locationMarkers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
@@ -306,18 +299,6 @@ $myArray = performSearch();
 
         
     }
-
-    
-
-    function findBoundsCentre()
-    {
-
-    }
-
-    console.log("please show me!");
-    console.log(locationPlaceCoords);
-
-    
     
     </script>
     
@@ -348,38 +329,8 @@ $myArray = performSearch();
         <br>
         
         <?php
-            //query to get values for camera make drop down list
-            $makeQuery = "SELECT DISTINCT make
-            FROM project.images
-            WHERE make <>''";
-
-            //query to get values for camera model drop down list
-            $modelQuery = "SELECT DISTINCT model
-            FROM project.images
-            WHERE model <>''";
-
-            //query to get values for shutter speed drop down list
-            $shutterspeedQuery = "SELECT DISTINCT shutterspeed
-            FROM project.images
-            WHERE shutterspeed <>''";
-
-            //query to get values for aperture drop down list
-            $apertureQuery = "SELECT DISTINCT aperture
-            FROM project.images
-            WHERE aperture <>''";
-
-            //query to get values for iso drop down list
-            $isoQuery = "SELECT DISTINCT iso
-            FROM project.images
-            WHERE iso <>''";
-
-            //query to get values for resolution drop down list
-            $resolutionQuery = "SELECT DISTINCT resolution
-            FROM project.images
-            WHERE resolution like '%dpi%'";
-
+            //create the metadata drop down lists
             
-
             $makeResult=mysqli_query($dbc,$makeQuery);
             $modelResult=mysqli_query($dbc,$modelQuery);
             $shutterspeedResult=mysqli_query($dbc,$shutterspeedQuery);
@@ -536,9 +487,10 @@ if(isset($_POST['mapSearch']))
     echo "<br>";
 
     echo "<h1>Image Gallery</h1>";
-    echo $coords;
-    echo "yo";
-    echo "<br>";
+    //$coords = json_encode($myArray);
+    //echo $coords;
+    //echo "yo";
+    //echo "<br>";
     // echo "tags: ".$tags;
     // echo "<br>";
     // echo "tagList: ".$tagList;

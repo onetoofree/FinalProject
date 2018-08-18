@@ -47,7 +47,7 @@ echo "these tags were selected: $myTags";
        * element that contains the map. */
       #map {
         /* height: 100%; */
-        width: 600px;
+        width: 1000px;
         height: 600px;
       }
       /* Optional: Makes the sample page fill the window. */

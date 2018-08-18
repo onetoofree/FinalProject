@@ -66,22 +66,7 @@ function performSearch()
         //Adding dynamic query for the location
         if(strlen($_POST['locLatCoords']) > 0 && strlen($_POST['searchRadius']) > 0)
         {
-            // echo "location is set";
-            // echo "<br>";
-            // $query = "SELECT
-            //     imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, shutterspeed, aperture, iso, resolution, (
-            //       3959 * acos (
-            //         cos ( radians($locSearchLat) )
-            //         * cos( radians( latitude ) )
-            //         * cos( radians( longitude ) - radians($locSearchLng) )
-            //         + sin ( radians($locSearchLat) )
-            //         * sin( radians( latitude ) )
-            //       )
-            //     ) AS distance
-            //   FROM project.images
-            //   HAVING distance < $searchRadius";
-
-             $query = $locationAndRadiusQuery;
+            $query = $locationAndRadiusQuery;
 
              echo $query;
              echo "<br>";
@@ -90,19 +75,6 @@ function performSearch()
         {
             // echo "location is set";
             // echo "<br>";
-            // $query = "SELECT
-            //     imageid, imagepath, longitude, latitude, year, thumbnailpath, make, model, shutterspeed, aperture, iso, resolution, (
-            //       3959 * acos (
-            //         cos ( radians($locSearchLat) )
-            //         * cos( radians( latitude ) )
-            //         * cos( radians( longitude ) - radians($locSearchLng) )
-            //         + sin ( radians($locSearchLat) )
-            //         * sin( radians( latitude ) )
-            //       )
-            //     ) AS distance
-            //   FROM project.images
-            //   HAVING distance <= 1";
-
             $query = $locationNoRadiusQuery;
 
              echo $query;
@@ -119,8 +91,6 @@ function performSearch()
         {
             echo "yearSearchStart is set and yearSearchEnd isn't";
             echo "<br>";
-            // $query .= " AND year >= $yearStart";
-
             $query .= $yearStartQuery;
 
             echo $query;
@@ -131,8 +101,6 @@ function performSearch()
         {
             echo "yearSearchStart is not set and yearSearchEnd is";
             echo "<br>";
-            // $query .= " AND year <= $yearEnd";
-
             $query .= $yearEndQuery;
 
             echo $query;
@@ -143,9 +111,6 @@ function performSearch()
         {
             echo "yearSearchStart is set and yearSearchEnd is set";
             echo "<br>";
-            // $query .= " AND year >= $yearStart 
-            //             AND year <= $yearEnd";
-                        
             $query .= $betweenYearStartAndEndQuery;
             
             echo $query;
@@ -161,12 +126,6 @@ function performSearch()
         {
             // echo "tagSearch is set";
             // echo "<br>";
-            // $query .= " AND imageid IN
-            // (
-            //     select distinct imageid from project.tags
-            //     where tag IN ($finalList)
-            // )";
-
             $query .= $tagQuery;
 
              echo $query;
@@ -183,8 +142,6 @@ function performSearch()
         {
             // echo "cameraMake is set";
             // echo "<br>";
-            // $query .= " AND make = '$cameraMake'";
-
             $query .= $cameraMakeQuery;
 
             echo $query;
@@ -201,8 +158,6 @@ function performSearch()
         {
             // echo "cameraModel is set";
             // echo "<br>";
-            // $query .= " AND model = '$cameraModel'";
-
             $query .= $cameraModelQuery;
 
              echo $query;
@@ -219,8 +174,6 @@ function performSearch()
         {
             // echo "shutterSpeed is set";
             // echo "<br>";
-            // $query .= " AND shutterspeed = '$shutterSpeed'";
-
             $query .= $shutterSpeedQuery;
 
              echo $query;
@@ -237,8 +190,6 @@ function performSearch()
         {
             // echo "aperture is set";
             // echo "<br>";
-            // $query .= " AND aperture = '$aperture'";
-
             $query .= $apertureQuery;
 
              echo $query;
@@ -255,8 +206,6 @@ function performSearch()
         {
             // echo "iso is set";
             // echo "<br>";
-            // $query .= " AND iso = '$iso'";
-
             $query .= $isoQuery;
 
              echo $query;
@@ -273,8 +222,6 @@ function performSearch()
         {
             // echo "resolution is set";
             // echo "<br>";
-            // $query .= " AND resolution = '$resolution'";
-
             $query .= $resolutionQuery;
 
              echo $query;
@@ -316,19 +263,5 @@ function performSearch()
 }
 return $myArray;
 }
-
-function displaySearchMapWithSearchBox()
-{
-  echo "<div class='locationSelector'>";
-  echo "<table>";
-  echo '<input id="pac-input" class="controls" name ="locationSearch" type="text" placeholder="Search Box">
-  <div id="map"></div>
-  <div id="result"></div>';
-  echo '<script src="../pages/js/searchMap.js"></script>';
-  echo "<tr>";
-  echo "</table>";
-  echo "</div>";
-}
-
 
 ?>
