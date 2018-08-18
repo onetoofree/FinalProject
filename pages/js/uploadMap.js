@@ -1,6 +1,7 @@
 
       function initAutocomplete() {
-          var myLatlng = {lat: 51.5074, lng: 0.1278};
+          // var myLatlng = {lat: 51.5074, lng: 0.1278};
+          var myLatlng = {lat: 51.5219, lng: -0.1302};
           var map = new google.maps.Map(document.getElementById("map"), {
           center: myLatlng,
           zoom: 13,

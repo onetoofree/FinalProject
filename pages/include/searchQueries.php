@@ -115,7 +115,4 @@ $isoQuery = " AND iso = '$iso'";
 //Resolution
 $resolutionQuery = " AND resolution = '$resolution'";
 
-
-
-
 ?>
