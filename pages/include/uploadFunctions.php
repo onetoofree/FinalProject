@@ -315,6 +315,8 @@ function readExifFromUploadedImages($selectedFile)
 
 function displayTags($fDestination)
 {
+  //need to break this up - it has display tags and selected tags in one
+  
   $googleVisionApiOutput = getVisionTags($fDestination);
   $tags = preg_replace("/[^a-zA-Z0-9,]+/", "", $googleVisionApiOutput);
   //$resultingTags = exec("python /Library/WebServer/Documents/project/pages/visionex/imageRecognition.py $selectedFile");

@@ -260,6 +260,7 @@ $myArray = performSearch();
             markers(map);
             
          var coords = <?php echo json_encode($myArray); ?>;
+         console.log(coords);
         
 
         function markers(map)

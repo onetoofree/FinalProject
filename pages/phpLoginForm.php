@@ -50,7 +50,7 @@ Password: <input type="password" name="password"><br>
           
             <div class="field-wrap">
             <label>
-			<span class="req"></span>
+			<!-- <span class="req"></span> -->
 			<!-- Username<span class="req">*</span> -->
             </label>
             <input type="text" placeholder = "Username *" required autocomplete="off" name="username"/>
