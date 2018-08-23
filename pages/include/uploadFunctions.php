@@ -47,10 +47,21 @@ function displaySelectedImage()
 {
   echo "<div class='selectedImage'>";  
   echo "<table>";
-  echo "<h1>selected image</h1>
+  echo "<h1>Selected Image</h1>
   <tr>
   <td><img src={$_SESSION['thumbDestination']}></td>";
   echo "</table>";
+  echo "</div>";
+}
+
+function displayUploadImage()
+{
+  echo "<div class='selectedImage'>";  
+  echo "<h1>Selected Image</h1>";
+  echo "<img src={$_SESSION['thumbDestination']} class='selectedImage'>";
+  //echo "<br>";
+  echo "<form action='onePageUpload.php' method='post'>";    
+  echo "<input type='text' placeholder = 'Enter year value here *'' id='year' name='year'><br>";
   echo "</div>";
 }
 

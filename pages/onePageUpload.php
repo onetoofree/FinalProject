@@ -35,15 +35,15 @@ $myTags = $_SESSION['selectedTags'];
     <title>Image Upload</title>
     <script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
     <?php include 'css/css.html'; ?>
-    <style>
+    <!-- <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        /* height: 100%; */
+        height: 100%;
         width: 1000px;
         height: 600px;
       }
-      /* Optional: Makes the sample page fill the window. */
+      
       html, body {
         height: 100%;
         margin: 0;
@@ -94,17 +94,6 @@ $myTags = $_SESSION['selectedTags'];
         font-weight: 300;
       }
 
-      #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-
       #pac-input:focus {
         border-color: #4d90fe;
       }
@@ -119,7 +108,7 @@ $myTags = $_SESSION['selectedTags'];
       #target {
         width: 345px;
       }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -138,8 +127,8 @@ $myTags = $_SESSION['selectedTags'];
 <?php
 if(isset($_FILES['file']))
 {
-    displaySelectedImage();
-    displayYearField();
+    displayUploadImage();
+    // displayYearField();
     displayUploadMapWithSearchBox();
     displayUploadButton();
     
