@@ -1,5 +1,7 @@
 <?php
 ob_start();
+require 'include/registrationAndLoginQueries.php';
+
 /* Registration process, inserts user info into the database 
    and sends account confirmation email message
  */
@@ -38,13 +40,15 @@ else { // Email doesn't already exist in a database, proceed...
     //         . "VALUES ($userid,'$username','$email','$password', '$active')";
     
     $passwordmd5 = md5($password);
-    $sql = "INSERT INTO user (userid, username, email, password, active) " 
-            . "VALUES ($userid,'$username','$email','$passwordmd5', '$active')";
+    // $sql = "INSERT INTO user (userid, username, email, password, active) " 
+    //         . "VALUES ($userid,'$username','$email','$passwordmd5', '$active')";
+
+            $sql = $insertNewRegisteredUserQuery;
 
             //echo "New record has id: " . $userid;
             header("location: home.php");
             //mkdir('../../../../projectUsers/userid/', 0777, true);
-            mkdir('/Users/peds/projectUsers', 0777, true);
+            //mkdir('/Users/peds/projectUsers', 0777, true);
 
     // Add user to the database
     if ( $dbc->query($sql) ){
