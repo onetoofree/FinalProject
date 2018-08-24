@@ -129,8 +129,8 @@ if(isset($_FILES['file']))
 {
     displayUploadImage();
     // displayYearField();
-    displayUploadMapWithSearchBox();
-    displayUploadButton();
+    //displayUploadMapWithSearchBox();
+    //displayUploadButton();
     
     readExifFromUploadedImages($fDestination);
     

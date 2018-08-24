@@ -32,18 +32,29 @@
 
   .selectedImage {
     background: rgba(19, 35, 47, 0.9); 
-    padding: 40px;
-    max-width: 600px;
-    margin: 40px auto;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 20px auto;
     border-radius: 4px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: 30%;
   }
 
-  
+  .uploadMap{
+    background: rgba(19, 35, 47, 0.9); 
+    padding: 20px;
+    max-width: 1600px;
+    margin: 20px auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }  
   
   .tab-group {
     list-style: none;
@@ -307,4 +318,37 @@
   #target {
     width: 345px;
   }
+
+  input[type=checkbox] {
+    display:block;
+    margin:0.2em;
+    cursor: pointer;
+    padding:0.2em;
+  }
+  
+  input[type=checkbox]:before{
+    content:"\2713";
+    /* border:0.1em solid #000; */
+    border-radius:0.2em;
+    display:inline-block;
+    width:1em;
+    height:1em;
+    padding-left:0.2em;
+    padding-bottom:0.3em;
+    margin-right:0.2em;
+    color:transparent;
+    transition:.2s;
+  }
+
+  input[type=checkbox]:active:before{
+    transform: scale(0);
+  }
+
+  input[type=checkbox]:checked:before{
+    background-color: #1ab188;
+    color:#fff;
+
+  }
+
+
   

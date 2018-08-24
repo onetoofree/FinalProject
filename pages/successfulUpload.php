@@ -16,6 +16,7 @@ putenv('GOOGLE_APPLICATION_CREDENTIALS=/Library/WebServer/Documents/project/apiK
     <meta charset="utf-8">
     <title>Successful Upload</title>
     <script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
+    <?php include 'css/css.html'; ?>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -104,11 +105,14 @@ putenv('GOOGLE_APPLICATION_CREDENTIALS=/Library/WebServer/Documents/project/apiK
 </head>
 
 <body>
-<h1>Here is your uploaded Image</h1>
+<div class="form">
+<h1>Would you like to tag your uploaded image?</h1>
+  
 
 <?php
 $fDestination = $_SESSION['fileDestination'];
 displaySelectedImage();
+echo "<h2>Select tags from the below suggestions</h2>";
 displayTags($fDestination);
 //displayTagSelector($fDestination);
 
@@ -123,5 +127,6 @@ if(isset($_POST['addTags']))
 ?>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.32&key=AIzaSyD-gybpP1HdyxjzaMM5X2UcM2B1iLO4GMg&libraries=places&callback=initAutocomplete"
          async defer></script>
+</div>
 </body>
 </html>
