@@ -41,6 +41,7 @@ Password: <input type="password" name="password"><br>
 <button type="submit" name="login" />Login</button>
 </form> -->
 
+<div class="container-fluid">
 <div class="form">
 
          <div id="login">   
@@ -74,6 +75,7 @@ Password: <input type="password" name="password"><br>
       </div><!-- tab-content -->
       
 </div> <!-- /form -->
+</div>
 
 </body>
 </html>
