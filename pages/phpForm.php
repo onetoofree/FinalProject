@@ -27,22 +27,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <head>
 	<title>Registration Form</title>
 	<script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
-	<!-- <?php include 'css/css.html'; ?> -->
+	<?php include 'css/css.html'; ?>
 </head>
 
 
 <body>
+<div class="form">
 <h1>User Registration Page</h1>
 
 <form action="phpForm.php" method="post">
-Username: <input type="text" name="username"><br>
-Email Address: <input type="text" name="email"><br>
-Password: <input type="password" name="password"><br>
-<button type="submit" name="register" />Register</button>
+<div class="field-wrap">	
+<input type="text" placeholder = "Username *" name="username">
+</div>
+<div class="field-wrap">
+<input type="text" placeholder = "Email Address *" name="email">
+</div>
+<div class="field-wrap">
+<input type="password" placeholder = "Password *" name="password">
+</div>
+<button type="submit" class="button button-block" name="register" />Register</button>
 <!-- <input type="submit" name="register"> -->
 </form>
 
 
-
+</div>
 </body>
 </html>

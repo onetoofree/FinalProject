@@ -68,8 +68,8 @@ function performSearch()
         {
             $query = $locationAndRadiusQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         elseif(strlen($_POST['locLatCoords']) > 0 && strlen($_POST['searchRadius']) == 0)
         {
@@ -77,8 +77,8 @@ function performSearch()
             // echo "<br>";
             $query = $locationNoRadiusQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -93,8 +93,8 @@ function performSearch()
             echo "<br>";
             $query .= $yearStartQuery;
 
-            echo $query;
-            echo "<br>";
+            // echo $query;
+            // echo "<br>";
         }
         //Adding dynamic query for the year end
         elseif(strlen($_POST['yearSearchStart']) == 0 && strlen($_POST['yearSearchEnd']) > 0)
@@ -103,8 +103,8 @@ function performSearch()
             echo "<br>";
             $query .= $yearEndQuery;
 
-            echo $query;
-            echo "<br>";
+            // echo $query;
+            // echo "<br>";
         }
         //Adding dynamic query for the between years
         elseif(strlen($_POST['yearSearchStart']) > 0 && strlen($_POST['yearSearchEnd']) > 0)
@@ -113,8 +113,8 @@ function performSearch()
             echo "<br>";
             $query .= $betweenYearStartAndEndQuery;
             
-            echo $query;
-            echo "<br>";
+            // echo $query;
+            // echo "<br>";
         }
 
         
@@ -128,8 +128,8 @@ function performSearch()
             // echo "<br>";
             $query .= $tagQuery;
 
-             echo $query;
-            echo "<br>";
+            //  echo $query;
+            // echo "<br>";
         }
         // else
         // {
@@ -144,8 +144,8 @@ function performSearch()
             // echo "<br>";
             $query .= $cameraMakeQuery;
 
-            echo $query;
-             echo "<br>";
+            // echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -160,8 +160,8 @@ function performSearch()
             // echo "<br>";
             $query .= $cameraModelQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -176,8 +176,8 @@ function performSearch()
             // echo "<br>";
             $query .= $shutterSpeedQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -192,8 +192,8 @@ function performSearch()
             // echo "<br>";
             $query .= $apertureQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -208,8 +208,8 @@ function performSearch()
             // echo "<br>";
             $query .= $isoQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
@@ -224,8 +224,8 @@ function performSearch()
             // echo "<br>";
             $query .= $resolutionQuery;
 
-             echo $query;
-             echo "<br>";
+            //  echo $query;
+            //  echo "<br>";
         }
         // else
         // {
