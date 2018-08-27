@@ -21,122 +21,12 @@ $myArray = performSearch();
     <link rel = "stylesheet" type = "text/css" href = "lightbox.min.css">
     <script type = "text/javascript" src="lightbox-plus-jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
-    <!-- <?php include 'css/css.html'; ?> -->
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        /* height: 100%; */
-        width: 1000px;
-        height: 600px;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #description {
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-      }
-
-      #infowindow-content .title {
-        font-weight: bold;
-      }
-
-      #infowindow-content {
-        display: none;
-      }
-
-      #map #infowindow-content {
-        display: inline;
-      }
-
-      .pac-card {
-        margin: 10px 10px 0 0;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        background-color: #fff;
-        font-family: Roboto;
-      }
-
-      #pac-container {
-        padding-bottom: 12px;
-        margin-right: 12px;
-      }
-
-      .pac-controls {
-        display: inline-block;
-        padding: 5px 11px;
-      }
-
-      .pac-controls label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }
-
-      #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-
-      #pac-input:focus {
-        border-color: #4d90fe;
-      }
-
-      #title {
-        color: #fff;
-        background-color: #4d90fe;
-        font-size: 25px;
-        font-weight: 500;
-        padding: 6px 12px;
-      }
-      #target {
-        width: 345px;
-      }
-
-      body
-        {
-            font-family: sans-serif;
-        }
-        h1 
-        {
-            text-align: center;
-            color: forestgreen;
-            margin: 30px 0 50px
-        }
-        .imageGallery
-        {
-            margin: 10px 50px;
-        }
-        .imageGallery img
-        {
-            width: 230px;
-            padding: 5px;
-            /* filter: grayscale(100%); */
-            transition: 0.5s;
-        }
-        .imageGallery img:hover
-        {
-            /* filter: grayscale(0); */
-            transform: scale(1.1);
-        }
-    </style>
+    <?php include 'css/css.html'; ?>
+    
   </head>
   <body>
-    
+  <div class="uploadMap">
+  <h1>Image Search</h1>
     <input id="pac-input" class="controls" name ="locationSearch" type="text" placeholder="Search Box">
     <div id="map"></div>
     <div id="result"></div>
@@ -310,23 +200,34 @@ $myArray = performSearch();
         <!-- <h4>Search by year</h4> -->
         <tr>
         <!-- <td><form action='plotMarkers.php' method='post'></td> -->
-        <td><form method='post'></td>        
-       
-        Start Year: <input type='text' id='yearSearchStart' name='yearSearchStart' value='4000'><br>
-        End Year: <input type='text' id='yearSearchEnd' name='yearSearchEnd' value='5000'><br>
-        <!-- <input type='hidden' name='locLatCoords' value='51.5083466'>
-        <input type='hidden' name='locLngCoords' value='-0.10841579999998885'> -->
+        <form method='post'>       
         <input type='hidden' id='locLatCoords' name='locLatCoords' value="">
         <input type='hidden' id='locLngCoords' name='locLngCoords' value="">
-        Search Radius: <input type='text' id='searchRadius' name='searchRadius' value='3000'><br>
-        <!-- Enter tag values separated by commas: <input type='text' id='tagSearch' name='tagSearch'><br> -->
+        <td class='search-text'>
+        Search Radius: <input type='text' placeholder = 'Enter radius around selected location to search' id='searchRadius' name='searchRadius'>
+        </td> 
+        <td class='search-text'>
+        Start Year: <input type='text' placeholder = 'Enter start year value' id='yearSearchStart' name='yearSearchStart'>
+        </td>
+        <td class='search-text'>
+        End Year: <input type='text' placeholder = 'Enter end year value' id='yearSearchEnd' name='yearSearchEnd'>
+        </td>
+        <!-- <input type='hidden' name='locLatCoords' value='51.5083466'>
+        <input type='hidden' name='locLngCoords' value='-0.10841579999998885'> -->
+        <!-- <input type='hidden' id='locLatCoords' name='locLatCoords' value="">
+        <input type='hidden' id='locLngCoords' name='locLngCoords' value="">
+        <td>
+        Search Radius: <input type='text' id='searchRadius' name='searchRadius' value='3000'>
+        </td> -->
+        </tr>
         <tr>
-        <!-- <br> -->
-        Enter tag values separated by commas:
+        <!-- Enter tag values separated by commas: -->
         <br>
         </tr>
         <tr>
-        <textarea rows="4" cols="50" id="tagSearch" name="tagSearch"></textarea>
+            <td class='search-text'>
+        Enter tag values separated by commas: <textarea rows="4" cols="50" placeholder = 'Enter comma separated tags' id="tagSearch" name="tagSearch"></textarea>
+        </td>
         </tr>
         <br>
         
@@ -341,11 +242,12 @@ $myArray = performSearch();
             $resolutionResult=mysqli_query($dbc,$resolutionQuery);
             
             //Populate the camera make drop down list
+        echo "<div>";
             echo "
                 <tr>
-                <td>Camera Make</td>
+                <td class='search-text'>Camera Make:</td>
                 <td>
-                <select id='metadata' name='cameraMake'>
+                <select class='custom-select' id='metadata' name='cameraMake'>
                     <option value=''>All Makes</option>";
 
                     while($row = mysqli_fetch_array($makeResult))
@@ -362,9 +264,9 @@ $myArray = performSearch();
             //Populate the camera model drop down list
             echo "
                 <tr>
-                <td>Camera Model</td>
+                <td class='search-text'>Camera Model:</td>
                 <td>
-                <select id='metadata' name='cameraModel'>
+                <select class='custom-select' id='metadata' name='cameraModel'>
                     <option value=''>All Models</option>";
 
                     while($row = mysqli_fetch_array($modelResult))
@@ -380,9 +282,9 @@ $myArray = performSearch();
             //Populate the photo shutter speed drop down list
             echo "
                 <tr>
-                <td>Shutter Speed</td>
+                <td class='search-text'>Shutter Speed:</td>
                 <td>
-                <select id='metadata' name='shutterSpeed'>
+                <select class='custom-select' id='metadata' name='shutterSpeed'>
                     <option value=''>Any Speed Setting</option>";
 
                     while($row = mysqli_fetch_array($shutterspeedResult))
@@ -398,9 +300,9 @@ $myArray = performSearch();
             //Populate the photo aperture drop down list
             echo "
                 <tr>
-                <td>Aperture</td>
+                <td class='search-text'>Aperture:</td>
                 <td>
-                <select id='metadata' name='aperture'>
+                <select class='custom-select' id='metadata' name='aperture'>
                     <option value=''>Any F Stop</option>";
 
                     while($row = mysqli_fetch_array($apertureResult))
@@ -416,9 +318,9 @@ $myArray = performSearch();
             //Populate the photo iso drop down list
             echo "
                 <tr>
-                <td>ISO</td>
+                <td class='search-text'>ISO:</td>
                 <td>
-                <select id='metadata' name='iso'>
+                <select class='custom-select' id='metadata' name='iso'>
                     <option value=''>Any ISO Setting</option>";
 
                     while($row = mysqli_fetch_array($isoResult))
@@ -434,9 +336,9 @@ $myArray = performSearch();
             //Populate the photo resolution drop down list
             echo "
                 <tr>
-                <td>Resolutions</td>
+                <td class='search-text'>Resolution:</td>
                 <td>
-                <select id='metadata' name='resolution'>
+                <select class='custom-select' id='metadata' name='resolution'>
                     <option value=''>Any Resolution</option>";
 
                     while($row = mysqli_fetch_array($resolutionResult))
@@ -449,21 +351,22 @@ $myArray = performSearch();
                 </tr>
             ";
 
+            echo "<tr>";
+            echo "<td></td>";
+            echo "</tr>";
+        echo "</div>";
+
            
         ?>
         
         
         <tr>
-            <td><button type='submit' name='mapSearch' />Search for Images</button></td>
+            <td><button type='submit' class='button button-block' name='mapSearch' />Search for Images</button></td>
         </tr>
         </table>
     </div>
     
 
-    <script>
-      console.log("tags");
-      //console.log();
-    </script>
     <!-- <textarea rows="4" cols="50">
     </textarea> -->
 
@@ -474,8 +377,7 @@ $myArray = performSearch();
         Enter tag values separated by commas: <input type='text' id='tagSearch' name='tagSearch'><br>
         </table>
     </div>   -->
-    
-    
+</div>   
 
     <?php
 
@@ -488,7 +390,7 @@ if(isset($_POST['mapSearch']))
     
     echo "<br>";
 
-    echo "<h1>Image Gallery</h1>";
+    echo "<h2>Image Gallery</h2>";
     //$coords = json_encode($myArray);
     //echo $coords;
     //echo "yo";
@@ -530,5 +432,6 @@ if(isset($_POST['mapSearch']))
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.32&key=AIzaSyD-gybpP1HdyxjzaMM5X2UcM2B1iLO4GMg&libraries=places,geometry&callback=initAutocomplete"
          async defer></script>
-  </body>
+ 
+</body>
 </html>

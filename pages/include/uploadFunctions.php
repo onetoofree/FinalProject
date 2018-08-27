@@ -69,13 +69,12 @@ function tagImage()
   echo "<h1>Selected Image</h1>";
   echo "<img src={$_SESSION['thumbDestination']} class='selectedImage'>";
   echo "<form action='onePageUpload.php' method='post'>";    
-  echo "<input type='text' placeholder = 'Enter year value here *'' id='year' name='year'><br>";
+  echo "<input type='text' placeholder = 'Enter year value here *' id='year' name='year'><br>";
   echo '<input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <div id="map" class="uploadMap"></div>
     <div id="result" class="selectedImage"></div>';
   echo '<script src="../pages/js/uploadMap.js"></script>';
   echo "<button type='submit' class='button button-block' name='uploadImage' />Upload Image and Details</button>";
-  // <button class="button button-block" name="login" />Log In</button>
   echo "</div>";
 }
 
@@ -369,7 +368,7 @@ function displayTags($fDestination)
     $checked = $_POST['options'];
     // echo "<div class='uploadMap'>";  
     echo "<div class='tagSelector'>";
-  
+    echo "<h2>Select tags from the below suggestions</h2>";
     echo "<form id='tagSelection' method='post'>"; 
     echo "<table cellspacing='3'>";
     echo "<tbody>"; 
@@ -383,7 +382,7 @@ function displayTags($fDestination)
     foreach($eachTag as $suggestedTag)
     {
         echo "<tr>";          
-        echo "<td>$suggestedTag</td>";            
+        echo "<td class='tagSelector'>$suggestedTag</td>";            
         echo "<td>";            
         echo "<input type='checkbox' id='$suggestedTag' name='options[]' value=$suggestedTag/>";
         // echo "<label for='$suggestedTag'>$suggestedTag</label>";             
@@ -398,7 +397,7 @@ function displayTags($fDestination)
     // echo "<input type='submit' name='addTags' value='Go!' />";
     echo "<tr>";
     echo "<td>";
-    echo "<button type='submit' class='button button-block' name='addTags' />Add Tags to Images</button>";
+    echo "<button type='submit' class='button button-block' name='addTags' />Click Here to Add Tags to Images</button>";
     echo "</td>";
     
     echo "</tr>";

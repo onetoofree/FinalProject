@@ -46,7 +46,7 @@ else { // Email doesn't already exist in a database, proceed...
             $sql = $insertNewRegisteredUserQuery;
 
             //echo "New record has id: " . $userid;
-            header("location: home.php");
+            header("location: phpLoginForm.php");
             //mkdir('../../../../projectUsers/userid/', 0777, true);
             //mkdir('/Users/peds/projectUsers', 0777, true);
 
